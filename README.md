@@ -9,6 +9,13 @@
 + 前端
   + vue3、element-plus
 
+## 安装
+
+1. 安装 golang 1.18 + ，下载地址： https://golang.google.cn/dl/
+2. 安装 node 15 + ，下载地址：https://nodejs.org/en/
+3. 安装 xcode 命令行 `xcode-select --install`
+4. 安装 wails `go install github.com/wailsapp/wails/v2/cmd/wails@latest`
+
 ## 功能模块
 
 + [ ] 连接管理
