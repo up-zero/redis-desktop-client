@@ -1,6 +1,7 @@
 package main
 
 import (
+	"changeme/internal/service"
 	"context"
 	"fmt"
 )
@@ -24,4 +25,19 @@ func (a *App) startup(ctx context.Context) {
 // Greet returns a greeting for the given name
 func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
+}
+
+// ConnectionList 连接列表
+func (a *App) ConnectionList() interface{} {
+	conn, err := service.ConnectionList()
+	if err != nil {
+		return map[string]interface{}{
+			"code": -1,
+			"msg":  "ERROR : " + err.Error(),
+		}
+	}
+	return map[string]interface{}{
+		"code": 200,
+		"data": conn,
+	}
 }
