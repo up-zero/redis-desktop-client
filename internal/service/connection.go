@@ -4,6 +4,7 @@ import (
 	"changeme/internal/define"
 	"encoding/json"
 	"errors"
+	uuid "github.com/satori/go.uuid"
 	"io/ioutil"
 	"os"
 )
@@ -35,6 +36,7 @@ func ConnectionCreate(conn *define.Connection) error {
 	if conn.Port == "" {
 		conn.Port = "6379"
 	}
+	conn.Identity = uuid.NewV4().String()
 	conf := new(define.Config)
 	nowPath, _ := os.Getwd()
 	data, err := ioutil.ReadFile(nowPath + string(os.PathSeparator) + define.ConfigName)
@@ -45,6 +47,7 @@ func ConnectionCreate(conn *define.Connection) error {
 		// 写入配置内容
 		os.MkdirAll(nowPath, 0666)
 		ioutil.WriteFile(nowPath+string(os.PathSeparator)+define.ConfigName, data, 0666)
+		return nil
 	}
 	json.Unmarshal(data, conf)
 	conf.Connections = append(conf.Connections, conn)
