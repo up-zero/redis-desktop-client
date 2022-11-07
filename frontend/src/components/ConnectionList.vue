@@ -13,19 +13,26 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import {ConnectionList} from "../../wailsjs/go/main/App.js";
 import {ElNotification} from "element-plus"
 let list = ref()
-ConnectionList().then(res => {
-  if (res.code !== 200) {
-    ElNotification({
-      title:res.msg,
-      type: "error",
-    })
-  }
-  list.value = res.data
+let props = defineProps(['flush'])
+watch(props, (newFlush)=>{
+  connectionList()
 })
+function connectionList(){
+  ConnectionList().then(res => {
+    if (res.code !== 200) {
+      ElNotification({
+        title:res.msg,
+        type: "error",
+      })
+    }
+    list.value = res.data
+  })
+}
+connectionList()
 </script>
 
 <style scoped>
