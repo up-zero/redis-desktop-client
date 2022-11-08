@@ -55,3 +55,35 @@ func ConnectionCreate(conn *define.Connection) error {
 	ioutil.WriteFile(nowPath+string(os.PathSeparator)+define.ConfigName, data, 0666)
 	return nil
 }
+
+// ConnectionEdit 编辑连接
+func ConnectionEdit(conn *define.Connection) error {
+	if conn.Identity == "" {
+		return errors.New("连接唯一标识不能为空")
+	}
+	if conn.Addr == "" {
+		return errors.New("连接地址不能为空")
+	}
+	// 参数默认值处理
+	if conn.Name == "" {
+		conn.Name = conn.Addr
+	}
+	if conn.Port == "" {
+		conn.Port = "6379"
+	}
+	conf := new(define.Config)
+	nowPath, _ := os.Getwd()
+	data, err := ioutil.ReadFile(nowPath + string(os.PathSeparator) + define.ConfigName)
+	if err != nil {
+		return err
+	}
+	json.Unmarshal(data, conf)
+	for i, v := range conf.Connections {
+		if v.Identity == conn.Identity {
+			conf.Connections[i] = conn
+		}
+	}
+	data, _ = json.Marshal(conf)
+	ioutil.WriteFile(nowPath+string(os.PathSeparator)+define.ConfigName, data, 0666)
+	return nil
+}

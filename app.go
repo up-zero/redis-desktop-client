@@ -57,3 +57,18 @@ func (a *App) ConnectionCreate(connection *define.Connection) H {
 		"msg":  "新建成功",
 	}
 }
+
+// ConnectionEdit 修改连接
+func (a *App) ConnectionEdit(connection *define.Connection) H {
+	err := service.ConnectionEdit(connection)
+	if err != nil {
+		return M{
+			"code": -1,
+			"msg":  "ERROR : " + err.Error(),
+		}
+	}
+	return M{
+		"code": 200,
+		"msg":  "新建成功",
+	}
+}
