@@ -13,9 +13,9 @@ function flushConnectionList() {
 
 <template>
   <el-row>
-    <el-col :span="6" style="height: 100vh; margin: 12px">
+    <el-col :span="6" style="height: 100vh; padding: 12px">
       <div style="margin-bottom: 12px">
-        <ConnectionManage title="新建连接" @emit-connection-list="flushConnectionList"/>
+        <ConnectionManage title="新建连接" btn-type="primary" @emit-connection-list="flushConnectionList"/>
       </div>
       <ConnectionList :flush="flushFlag"/>
     </el-col>

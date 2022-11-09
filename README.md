@@ -1,6 +1,8 @@
 # RedisClient
 
 > 基于Golang Wails 开发的Redis桌面工具
+> 
+> B站视频链接：https://www.bilibili.com/video/BV1hP411w7k5/
 
 ## 技术栈
 
@@ -21,7 +23,7 @@
 + [ ] 连接管理
   + [x] 连接列表
   + [x] 新建连接
-  + [ ] 修改连接
+  + [x] 修改连接
   + [ ] 删除连接
 + [ ] 数据操作
   + [ ] 键列表查询

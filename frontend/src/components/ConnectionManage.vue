@@ -1,6 +1,6 @@
 <template>
   <main>
-    <el-button type="primary" @click="dialogVisible = true">{{title}}</el-button>
+    <el-button :type="btnType" @click="dialogVisible = true">{{title}}</el-button>
     <el-dialog
         v-model="dialogVisible"
         :title="title"
@@ -23,26 +23,50 @@
           <el-input placeholder="请输入密码" type="password" v-model="form.password" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="createConnection">创建</el-button>
+          <el-button v-if="data === undefined" type="primary" @click="createConnection">创建</el-button>
+          <el-button v-else type="primary" @click="editConnection">编辑</el-button>
           <el-button @click="dialogVisible = false">取消</el-button>
         </el-form-item>
       </el-form>
+      {{form}}
     </el-dialog>
 
   </main>
 </template>
 
 <script setup>
-import {ref, reactive} from "vue";
+import {ref, reactive, watch, watchEffect} from "vue";
 import {ConnectionCreate} from "../../wailsjs/go/main/App.js";
+import {ConnectionEdit} from "../../wailsjs/go/main/App.js";
 import {ElNotification} from "element-plus";
-defineProps(['title'])
+let props = defineProps(['title', 'btnType', 'data'])
 const dialogVisible = ref(false)
 const emits = defineEmits(['emit-connection-list'])
-const form = reactive({})
+let form = reactive({})
+if (props.data !== undefined) {
+  form = props.data
+}
 
 function createConnection() {
   ConnectionCreate(form).then(res => {
+    if (res.code !== 200) {
+      ElNotification({
+        title:res.msg,
+        type: "error",
+      })
+      return
+    }
+    ElNotification({
+      title:res.msg,
+      type: "success",
+    })
+    // 获取新的连接地址
+    emits('emit-connection-list')
+  })
+}
+
+function editConnection() {
+  ConnectionEdit(form).then(res => {
     if (res.code !== 200) {
       ElNotification({
         title:res.msg,

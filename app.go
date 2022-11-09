@@ -69,6 +69,6 @@ func (a *App) ConnectionEdit(connection *define.Connection) H {
 	}
 	return M{
 		"code": 200,
-		"msg":  "新建成功",
+		"msg":  "编辑成功",
 	}
 }
