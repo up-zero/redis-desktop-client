@@ -1,4 +1,4 @@
-# RedisClient
+# RedisDesktopClient
 
 > 基于Golang Wails 开发的Redis桌面工具
 > 
