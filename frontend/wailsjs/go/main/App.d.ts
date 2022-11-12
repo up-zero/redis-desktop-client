@@ -5,6 +5,8 @@ import {main} from '../models';
 
 export function ConnectionCreate(arg1:define.Connection):Promise<main.H>;
 
+export function ConnectionDelete(arg1:string):Promise<main.H>;
+
 export function ConnectionEdit(arg1:define.Connection):Promise<main.H>;
 
 export function ConnectionList():Promise<main.H>;

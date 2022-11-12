@@ -87,3 +87,29 @@ func ConnectionEdit(conn *define.Connection) error {
 	ioutil.WriteFile(nowPath+string(os.PathSeparator)+define.ConfigName, data, 0666)
 	return nil
 }
+
+// ConnectionDelete 删除连接
+func ConnectionDelete(identity string) error {
+	if identity == "" {
+		return errors.New("连接唯一标识不能为空")
+	}
+	conf := new(define.Config)
+	nowPath, _ := os.Getwd()
+	data, err := ioutil.ReadFile(nowPath + string(os.PathSeparator) + define.ConfigName)
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(data, conf)
+	if err != nil {
+		return err
+	}
+	for i, v := range conf.Connections {
+		if v.Identity == identity {
+			conf.Connections = append(conf.Connections[:i], conf.Connections[i+1:]...)
+			break
+		}
+	}
+	data, _ = json.Marshal(conf)
+	ioutil.WriteFile(nowPath+string(os.PathSeparator)+define.ConfigName, data, 0666)
+	return nil
+}

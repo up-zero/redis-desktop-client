@@ -28,7 +28,6 @@
           <el-button @click="dialogVisible = false">取消</el-button>
         </el-form-item>
       </el-form>
-      {{form}}
     </el-dialog>
 
   </main>

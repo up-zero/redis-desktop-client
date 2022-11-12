@@ -1,6 +1,6 @@
 {
-  "name": "redis-client",
-  "outputfilename": "redis-client",
+  "name": "redis-desktop-client",
+  "outputfilename": "redis-desktop-client",
   "frontend:install": "npm install",
   "frontend:build": "npm run build",
   "frontend:dev:watcher": "npm run dev",

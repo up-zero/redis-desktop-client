@@ -5,12 +5,17 @@
         <el-collapse-item v-for="item in list" :name="item.identity">
           <template #title>
             <div class="item">
-              <span>
+              <div>
                 {{ item.name }}
-              </span>
-              <span>
+              </div>
+              <div style="display: flex">
                 <ConnectionManage @click.stop title="编辑" btn-type="text" :data="item" @emit-connection-list="connectionList"/>
-              </span>
+                <el-popconfirm title="确认删除?" @confirm="connectionDelete(item.identity)">
+                  <template #reference>
+                    <el-button link type="danger" @click.stop>删除</el-button>
+                  </template>
+                </el-popconfirm>
+              </div>
             </div>
           </template>
         </el-collapse-item>
@@ -21,7 +26,7 @@
 
 <script setup>
 import {ref, watch} from "vue";
-import {ConnectionList} from "../../wailsjs/go/main/App.js";
+import {ConnectionDelete, ConnectionList} from "../../wailsjs/go/main/App.js";
 import {ElNotification} from "element-plus"
 import ConnectionManage from "./ConnectionManage.vue";
 let list = ref()
@@ -41,6 +46,22 @@ function connectionList(){
   })
 }
 connectionList()
+
+function connectionDelete(identity) {
+  ConnectionDelete(identity).then(res => {
+    if (res.code !== 200) {
+      ElNotification({
+        title:res.msg,
+        type: "error",
+      })
+    }
+    ElNotification({
+      title:res.msg,
+      type: "success",
+    })
+    connectionList()
+  })
+}
 </script>
 
 <style scoped>
