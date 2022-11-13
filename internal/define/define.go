@@ -14,3 +14,8 @@ type Connection struct {
 type Config struct {
 	Connections []*Connection `json:"connections"`
 }
+
+type DbItem struct {
+	Key    string `json:"key"`    // db0 , db1
+	Number int    `json:"number"` // 个数
+}
