@@ -66,7 +66,7 @@ func DbList(identity string) ([]*define.DbItem, error) {
 	if err != nil {
 		return nil, err
 	}
-	data := make([]*define.DbItem, dbNum)
+	data := make([]*define.DbItem, 0)
 	for i := 0; i < dbNum; i++ {
 		item := &define.DbItem{
 			Key: "db" + strconv.Itoa(i),

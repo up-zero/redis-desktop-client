@@ -2,7 +2,7 @@
   <main>
     <div class="demo-collapse">
       <el-collapse accordion>
-        <el-collapse-item v-for="item in list" :name="item.identity">
+        <el-collapse-item v-for="item in list" :name="item.identity" @click="getInfo(item.identity)">
           <template #title>
             <div class="item">
               <div>
@@ -18,6 +18,9 @@
               </div>
             </div>
           </template>
+          <div v-for="db in infoDbList" class="db-item">
+            {{db.key}} ( {{db.number}} )
+          </div>
         </el-collapse-item>
       </el-collapse>
     </div>
@@ -26,14 +29,18 @@
 
 <script setup>
 import {ref, watch} from "vue";
-import {ConnectionDelete, ConnectionList} from "../../wailsjs/go/main/App.js";
+import {ConnectionDelete, ConnectionList, DbList} from "../../wailsjs/go/main/App.js";
 import {ElNotification} from "element-plus"
 import ConnectionManage from "./ConnectionManage.vue";
 let list = ref()
 let props = defineProps(['flush'])
+let infoDbList = ref()
+
 watch(props, (newFlush)=>{
   connectionList()
 })
+
+// 连接列表
 function connectionList(){
   ConnectionList().then(res => {
     if (res.code !== 200) {
@@ -47,6 +54,7 @@ function connectionList(){
 }
 connectionList()
 
+// 删除连接
 function connectionDelete(identity) {
   ConnectionDelete(identity).then(res => {
     if (res.code !== 200) {
@@ -62,6 +70,21 @@ function connectionDelete(identity) {
     connectionList()
   })
 }
+
+// 获取基本信息
+function getInfo(identity) {
+  // 获取数据库列表
+  DbList(identity).then(res => {
+    if (res.code !== 200) {
+      ElNotification({
+        title:res.msg,
+        type: "error",
+      })
+      return
+    }
+    infoDbList.value = res.data
+  })
+}
 </script>
 
 <style scoped>
@@ -69,5 +92,11 @@ function connectionDelete(identity) {
   display: flex;
   width: 100%;
   justify-content: space-between;
+}
+.db-item {
+  color: #409eff;
+  background-color: #ecf5ff;
+  padding: 5px 12px;
+  margin-bottom: 5px;
 }
 </style>

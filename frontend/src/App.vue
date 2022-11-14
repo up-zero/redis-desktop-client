@@ -1,5 +1,4 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
 import ConnectionList from "./components/ConnectionList.vue";
 import ConnectionManage from "./components/ConnectionManage.vue";
 import {ref} from "vue";
