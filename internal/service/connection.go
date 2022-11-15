@@ -1,9 +1,9 @@
 package service
 
 import (
-	"changeme/internal/define"
 	"encoding/json"
 	"errors"
+	"gitee.com/up-zero/redis-desktop-client/internal/define"
 	uuid "github.com/satori/go.uuid"
 	"io/ioutil"
 	"os"

@@ -1,9 +1,9 @@
 package service
 
 import (
-	"changeme/internal/define"
-	"changeme/internal/helper"
 	"context"
+	"gitee.com/up-zero/redis-desktop-client/internal/define"
+	"gitee.com/up-zero/redis-desktop-client/internal/helper"
 	"github.com/go-redis/redis/v8"
 )
 

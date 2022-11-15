@@ -1,9 +1,9 @@
 package helper
 
 import (
-	"changeme/internal/define"
 	"encoding/json"
 	"errors"
+	"gitee.com/up-zero/redis-desktop-client/internal/define"
 	"io/ioutil"
 	"os"
 )

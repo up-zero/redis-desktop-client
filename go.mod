@@ -1,4 +1,4 @@
-module changeme
+module gitee.com/up-zero/redis-desktop-client
 
 go 1.18
 

@@ -1,10 +1,10 @@
 package main
 
 import (
-	"changeme/internal/define"
-	"changeme/internal/service"
 	"context"
 	"fmt"
+	"gitee.com/up-zero/redis-desktop-client/internal/define"
+	"gitee.com/up-zero/redis-desktop-client/internal/service"
 )
 
 // App struct
