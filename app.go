@@ -102,3 +102,24 @@ func (a *App) DbList(identity string) H {
 		"data": dbs,
 	}
 }
+
+// KeyList 键列表
+func (a *App) KeyList(req *define.KeyListRequest) H {
+	if req.ConnIdentity == "" {
+		return M{
+			"code": -1,
+			"msg":  "连接的唯一标识不能为空",
+		}
+	}
+	data, err := service.KeyList(req)
+	if err != nil {
+		return M{
+			"code": -1,
+			"msg":  "ERROR : " + err.Error(),
+		}
+	}
+	return M{
+		"code": 200,
+		"data": data,
+	}
+}

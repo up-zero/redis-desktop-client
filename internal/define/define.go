@@ -19,3 +19,9 @@ type DbItem struct {
 	Key    string `json:"key"`    // db0 , db1
 	Number int    `json:"number"` // 个数
 }
+
+type KeyListRequest struct {
+	ConnIdentity string `json:"conn_identity"`
+	Db           int    `json:"db"`
+	Keyword      string `json:"keyword"`
+}

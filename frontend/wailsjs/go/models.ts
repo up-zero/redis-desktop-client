@@ -22,6 +22,22 @@ export namespace define {
 	        this.password = source["password"];
 	    }
 	}
+	export class KeyListRequest {
+	    conn_identity: string;
+	    db: number;
+	    keyword: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new KeyListRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.conn_identity = source["conn_identity"];
+	        this.db = source["db"];
+	        this.keyword = source["keyword"];
+	    }
+	}
 
 }
 

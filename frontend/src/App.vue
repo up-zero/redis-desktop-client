@@ -2,18 +2,18 @@
 import ConnectionList from "./components/ConnectionList.vue";
 import ConnectionManage from "./components/ConnectionManage.vue";
 import {ref} from "vue";
-import {DbList} from "../wailsjs/go/main/App.js";
+import {DbList, KeyList} from "../wailsjs/go/main/App.js";
 
 let flushFlag = ref(true)
 
-let dbList = ref()
+let keyList = ref()
 
 function flushConnectionList() {
   flushFlag.value = !flushFlag.value
 }
 
-DbList("cc69d2e0-80e4-40ed-96a3-8706403b4c7c").then(res => {
-  dbList.value = res
+KeyList({conn_identity:"cc69d2e0-80e4-40ed-96a3-8706403b4c7c", db:0, keyword: "name"}).then(res => {
+  keyList.value = res
 })
 </script>
 
@@ -26,7 +26,7 @@ DbList("cc69d2e0-80e4-40ed-96a3-8706403b4c7c").then(res => {
       <ConnectionList :flush="flushFlag"/>
     </el-col>
     <el-col :span="18">
-      dbList ==> {{dbList}}
+      dbList ==> {{keyList}}
     </el-col>
   </el-row>
 <!--  <img id="logo" alt="Wails logo" src="./assets/images/logo-universal.png"/>-->

@@ -14,3 +14,5 @@ export function ConnectionList():Promise<main.H>;
 export function DbList(arg1:string):Promise<main.H>;
 
 export function Greet(arg1:string):Promise<string>;
+
+export function KeyList(arg1:define.KeyListRequest):Promise<main.H>;

@@ -25,3 +25,7 @@ export function DbList(arg1) {
 export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }
+
+export function KeyList(arg1) {
+  return window['go']['main']['App']['KeyList'](arg1);
+}
