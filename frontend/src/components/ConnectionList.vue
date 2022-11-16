@@ -18,8 +18,9 @@
               </div>
             </div>
           </template>
-          <div v-for="db in infoDbList" class="db-item">
-            {{db.key}} ( {{db.number}} )
+          <div v-for="db in infoDbList" @click="selectDB(db.key, item.identity)">
+            <div v-if="db.key !== selectDbKey" class="my-item">{{db.key}} ( {{db.number}} )</div>
+            <div v-else class="my-select-item">{{db.key}} ( {{db.number}} )</div>
           </div>
         </el-collapse-item>
       </el-collapse>
@@ -34,7 +35,9 @@ import {ElNotification} from "element-plus"
 import ConnectionManage from "./ConnectionManage.vue";
 let list = ref()
 let props = defineProps(['flush'])
+let emits = defineEmits(['emit-select-db'])
 let infoDbList = ref()
+let selectDbKey = ref()
 
 watch(props, (newFlush)=>{
   connectionList()
@@ -85,6 +88,14 @@ function getInfo(identity) {
     infoDbList.value = res.data
   })
 }
+
+// 选中数据库
+function selectDB(db, connIdentity) {
+  selectDbKey.value = db
+  // db0 db1
+  // 0 1
+  emits('emit-select-db', Number(db.substring(2)), connIdentity)
+}
 </script>
 
 <style scoped>
@@ -92,11 +103,5 @@ function getInfo(identity) {
   display: flex;
   width: 100%;
   justify-content: space-between;
-}
-.db-item {
-  color: #409eff;
-  background-color: #ecf5ff;
-  padding: 5px 12px;
-  margin-bottom: 5px;
 }
 </style>

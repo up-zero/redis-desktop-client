@@ -2,3 +2,15 @@
     margin: 0;
     padding: 0;
 }
+.my-item {
+    color: #409eff;
+    background-color: #ecf5ff;
+    padding: 5px 12px;
+    margin-bottom: 5px;
+}
+.my-select-item {
+    color: #67c23a;
+    background-color: #f0f9eb;
+    padding: 5px 12px;
+    margin-bottom: 5px;
+}
