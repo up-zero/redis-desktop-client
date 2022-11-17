@@ -1,5 +1,7 @@
 package define
 
+import "time"
+
 var ConfigName = "redis-client.conf"
 
 type Connection struct {
@@ -24,4 +26,16 @@ type KeyListRequest struct {
 	ConnIdentity string `json:"conn_identity"`
 	Db           int    `json:"db"`
 	Keyword      string `json:"keyword"`
+}
+
+type KeyValueRequest struct {
+	ConnIdentity string `json:"conn_identity"`
+	Db           int    `json:"db"`
+	Key          string `json:"key"`
+}
+
+type KeyValueReply struct {
+	Value string        `json:"value"`
+	TTL   time.Duration `json:"ttl"`
+	Type  string        `json:"type"`
 }

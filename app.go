@@ -123,3 +123,24 @@ func (a *App) KeyList(req *define.KeyListRequest) H {
 		"data": data,
 	}
 }
+
+// GetKeyValue 键值对查询
+func (a *App) GetKeyValue(req *define.KeyValueRequest) H {
+	if req.Key == "" || req.ConnIdentity == "" {
+		return M{
+			"code": -1,
+			"msg":  "必填参不能为空",
+		}
+	}
+	data, err := service.GetKeyValue(req)
+	if err != nil {
+		return M{
+			"code": -1,
+			"msg":  "ERROR : " + err.Error(),
+		}
+	}
+	return M{
+		"code": 200,
+		"data": data,
+	}
+}

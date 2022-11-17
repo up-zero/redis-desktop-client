@@ -2,13 +2,13 @@
 import ConnectionList from "./components/ConnectionList.vue";
 import ConnectionManage from "./components/ConnectionManage.vue";
 import {ref} from "vue";
-import {DbList, KeyList} from "../wailsjs/go/main/App.js";
+import {DbList, GetKeyValue, KeyList} from "../wailsjs/go/main/App.js";
 import Keys from "./components/Keys.vue";
 
 let flushFlag = ref(true)
 let keyDB = ref()
 let keyConnIdentity = ref()
-let keyList = ref()
+let keyValue = ref()
 
 function flushConnectionList() {
   flushFlag.value = !flushFlag.value
@@ -20,8 +20,8 @@ function selectDB (db, connIdentity) {
   keyConnIdentity.value = connIdentity
 }
 
-KeyList({conn_identity:"cc69d2e0-80e4-40ed-96a3-8706403b4c7c", db:0, keyword: "name"}).then(res => {
-  keyList.value = res
+GetKeyValue({conn_identity:"cc69d2e0-80e4-40ed-96a3-8706403b4c7c", db:0, key: "name"}).then(res => {
+  keyValue.value = res
 })
 </script>
 
@@ -37,7 +37,7 @@ KeyList({conn_identity:"cc69d2e0-80e4-40ed-96a3-8706403b4c7c", db:0, keyword: "n
       <Keys :keyDB="keyDB" :keyConnIdentity="keyConnIdentity"/>
     </el-col>
     <el-col :span="12">
-      dbList ==> {{keyList}}
+      keyValue ==> {{keyValue}}
     </el-col>
   </el-row>
 <!--  <img id="logo" alt="Wails logo" src="./assets/images/logo-universal.png"/>-->

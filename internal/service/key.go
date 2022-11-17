@@ -28,3 +28,34 @@ func KeyList(req *define.KeyListRequest) ([]string, error) {
 	}
 	return res, nil
 }
+
+func GetKeyValue(req *define.KeyValueRequest) (*define.KeyValueReply, error) {
+	conn, err := helper.GetConnection(req.ConnIdentity)
+	if err != nil {
+		return nil, err
+	}
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     conn.Addr + ":" + conn.Port,
+		Username: conn.Username,
+		Password: conn.Password,
+		DB:       req.Db,
+	})
+	_type, err := rdb.Type(context.Background(), req.Key).Result()
+	if err != nil {
+		return nil, err
+	}
+	// _type => string
+	v, err := rdb.Get(context.Background(), req.Key).Result()
+	if err != nil {
+		return nil, err
+	}
+	ttl, err := rdb.TTL(context.Background(), req.Key).Result()
+	if err != nil {
+		return nil, err
+	}
+	return &define.KeyValueReply{
+		Value: v,
+		TTL:   ttl,
+		Type:  _type,
+	}, nil
+}
