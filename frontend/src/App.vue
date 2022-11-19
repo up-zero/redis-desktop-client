@@ -4,11 +4,12 @@ import ConnectionManage from "./components/ConnectionManage.vue";
 import {ref} from "vue";
 import {DbList, GetKeyValue, KeyList} from "../wailsjs/go/main/App.js";
 import Keys from "./components/Keys.vue";
+import KeyValue from "./components/KeyValue.vue";
 
 let flushFlag = ref(true)
 let keyDB = ref()
 let keyConnIdentity = ref()
-let keyValue = ref()
+let keyKey = ref()
 
 function flushConnectionList() {
   flushFlag.value = !flushFlag.value
@@ -20,9 +21,10 @@ function selectDB (db, connIdentity) {
   keyConnIdentity.value = connIdentity
 }
 
-GetKeyValue({conn_identity:"cc69d2e0-80e4-40ed-96a3-8706403b4c7c", db:0, key: "name"}).then(res => {
-  keyValue.value = res
-})
+// 选中键
+function selectKey(key) {
+  keyKey.value = key
+}
 </script>
 
 <template>
@@ -34,14 +36,12 @@ GetKeyValue({conn_identity:"cc69d2e0-80e4-40ed-96a3-8706403b4c7c", db:0, key: "n
       <ConnectionList @emit-select-db="selectDB" :flush="flushFlag"/>
     </el-col>
     <el-col :span="7" style="padding: 12px">
-      <Keys :keyDB="keyDB" :keyConnIdentity="keyConnIdentity"/>
+      <Keys :keyDB="keyDB" :keyConnIdentity="keyConnIdentity" @emit-select-key="selectKey"/>
     </el-col>
-    <el-col :span="12">
-      keyValue ==> {{keyValue}}
+    <el-col :span="12" style="padding: 12px">
+      <KeyValue :keyDB="keyDB" :keyConnIdentity="keyConnIdentity" :keyKey="keyKey" />
     </el-col>
   </el-row>
-<!--  <img id="logo" alt="Wails logo" src="./assets/images/logo-universal.png"/>-->
-<!--  <HelloWorld/>-->
 </template>
 
 <style>

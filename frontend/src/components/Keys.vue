@@ -8,7 +8,10 @@
         <el-button type="primary" @click="getKeyList">查询</el-button>
       </el-form-item>
     </el-form>
-    <div v-for="item in keys" class="my-item">{{item}}</div>
+    <div v-for="item in keys" @click="selectKeyKey(item)">
+      <div v-if="item === selectKey" class="my-select-item">{{item}}</div>
+      <div v-else class="my-item">{{item}}</div>
+    </div>
   </main>
 </template>
 
@@ -22,7 +25,9 @@ const form = reactive({
 })
 
 let props = defineProps(['keyDB', 'keyConnIdentity'])
+let emits = defineEmits(['emit-select-key'])
 let keys = ref()
+let selectKey = ref()
 
 watch(props, ()=> {
   getKeyList()
@@ -44,6 +49,11 @@ function getKeyList() {
     }
     keys.value = res.data
   })
+}
+
+function selectKeyKey(key) {
+  selectKey.value = key
+  emits('emit-select-key', key)
 }
 </script>
 
