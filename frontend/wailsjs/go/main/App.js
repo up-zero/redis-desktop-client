@@ -22,6 +22,10 @@ export function DbList(arg1) {
   return window['go']['main']['App']['DbList'](arg1);
 }
 
+export function DeleteKeyValue(arg1) {
+  return window['go']['main']['App']['DeleteKeyValue'](arg1);
+}
+
 export function GetKeyValue(arg1) {
   return window['go']['main']['App']['GetKeyValue'](arg1);
 }

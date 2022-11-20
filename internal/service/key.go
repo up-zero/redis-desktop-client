@@ -59,3 +59,18 @@ func GetKeyValue(req *define.KeyValueRequest) (*define.KeyValueReply, error) {
 		Type:  _type,
 	}, nil
 }
+
+func DeleteKeyValue(req *define.KeyValueRequest) error {
+	conn, err := helper.GetConnection(req.ConnIdentity)
+	if err != nil {
+		return err
+	}
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     conn.Addr + ":" + conn.Port,
+		Username: conn.Username,
+		Password: conn.Password,
+		DB:       req.Db,
+	})
+	_, err = rdb.Del(context.Background(), req.Key).Result()
+	return err
+}

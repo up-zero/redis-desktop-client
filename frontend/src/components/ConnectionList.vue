@@ -99,9 +99,5 @@ function selectDB(db, connIdentity) {
 </script>
 
 <style scoped>
-.item {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-}
+
 </style>

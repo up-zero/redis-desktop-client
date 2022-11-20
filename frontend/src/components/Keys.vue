@@ -9,14 +9,28 @@
       </el-form-item>
     </el-form>
     <div v-for="item in keys" @click="selectKeyKey(item)">
-      <div v-if="item === selectKey" class="my-select-item">{{item}}</div>
-      <div v-else class="my-item">{{item}}</div>
+      <div v-if="item === selectKey" class="item key-select-item">
+        <div style="padding: 5px 12px">{{item}}</div>
+        <el-popconfirm title="确认删除?" @confirm="deleteKey(item)">
+          <template #reference>
+            <el-button text type="danger" @click.stop>删除</el-button>
+          </template>
+        </el-popconfirm>
+      </div>
+      <div v-else class="item key-item">
+        <div style="padding: 5px 12px">{{item}}</div>
+        <el-popconfirm title="确认删除?" @confirm="deleteKey(item)">
+          <template #reference>
+            <el-button text type="danger" @click.stop>删除</el-button>
+          </template>
+        </el-popconfirm>
+      </div>
     </div>
   </main>
 </template>
 
 <script setup>
-import {KeyList} from "../../wailsjs/go/main/App.js";
+import {ConnectionDelete, DeleteKeyValue, KeyList} from "../../wailsjs/go/main/App.js";
 import {reactive, ref, watch} from 'vue'
 import {ElNotification} from "element-plus";
 
@@ -55,8 +69,34 @@ function selectKeyKey(key) {
   selectKey.value = key
   emits('emit-select-key', key)
 }
+
+function deleteKey(key) {
+  DeleteKeyValue({conn_identity: props.keyConnIdentity, db: props.keyDB, key: key}).then(res => {
+    if (res.code !== 200) {
+      ElNotification({
+        title:res.msg,
+        type: "error",
+      })
+      return
+    }
+    ElNotification({
+      title:res.msg,
+      type: "success",
+    })
+    getKeyList()
+  })
+}
 </script>
 
 <style scoped>
-
+.key-item {
+  color: #409eff;
+  background-color: #ecf5ff;
+  margin-bottom: 5px;
+}
+.key-select-item {
+  color: #67c23a;
+  background-color: #f0f9eb;
+  margin-bottom: 5px;
+}
 </style>

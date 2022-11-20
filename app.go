@@ -144,3 +144,24 @@ func (a *App) GetKeyValue(req *define.KeyValueRequest) H {
 		"data": data,
 	}
 }
+
+// DeleteKeyValue 键值对删除
+func (a *App) DeleteKeyValue(req *define.KeyValueRequest) H {
+	if req.Key == "" || req.ConnIdentity == "" {
+		return M{
+			"code": -1,
+			"msg":  "必填参不能为空",
+		}
+	}
+	err := service.DeleteKeyValue(req)
+	if err != nil {
+		return M{
+			"code": -1,
+			"msg":  "ERROR : " + err.Error(),
+		}
+	}
+	return M{
+		"code": 200,
+		"msg":  "删除成功",
+	}
+}
