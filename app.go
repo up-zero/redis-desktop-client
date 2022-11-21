@@ -165,3 +165,24 @@ func (a *App) DeleteKeyValue(req *define.KeyValueRequest) H {
 		"msg":  "删除成功",
 	}
 }
+
+// CreateKeyValue 键值对新增
+func (a *App) CreateKeyValue(req *define.CreateKeyValueRequest) H {
+	if req.Key == "" || req.ConnIdentity == "" || req.Type == "" {
+		return M{
+			"code": -1,
+			"msg":  "必填参不能为空",
+		}
+	}
+	err := service.CreateKeyValue(req)
+	if err != nil {
+		return M{
+			"code": -1,
+			"msg":  "ERROR : " + err.Error(),
+		}
+	}
+	return M{
+		"code": 200,
+		"msg":  "新增成功",
+	}
+}

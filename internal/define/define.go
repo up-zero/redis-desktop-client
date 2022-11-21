@@ -39,3 +39,8 @@ type KeyValueReply struct {
 	TTL   time.Duration `json:"ttl"`
 	Type  string        `json:"type"`
 }
+
+type CreateKeyValueRequest struct {
+	KeyValueRequest
+	Type string `json:"type"`
+}

@@ -74,3 +74,20 @@ func DeleteKeyValue(req *define.KeyValueRequest) error {
 	_, err = rdb.Del(context.Background(), req.Key).Result()
 	return err
 }
+
+func CreateKeyValue(req *define.CreateKeyValueRequest) error {
+	conn, err := helper.GetConnection(req.ConnIdentity)
+	if err != nil {
+		return err
+	}
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     conn.Addr + ":" + conn.Port,
+		Username: conn.Username,
+		Password: conn.Password,
+		DB:       req.Db,
+	})
+	// type => string
+	defaultValue := "value"
+	err = rdb.Set(context.Background(), req.Key, defaultValue, -1).Err()
+	return err
+}

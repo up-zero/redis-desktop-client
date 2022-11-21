@@ -2,7 +2,7 @@
 import ConnectionList from "./components/ConnectionList.vue";
 import ConnectionManage from "./components/ConnectionManage.vue";
 import {ref} from "vue";
-import {DbList, GetKeyValue, KeyList} from "../wailsjs/go/main/App.js";
+import {CreateKeyValue, DbList, GetKeyValue, KeyList} from "../wailsjs/go/main/App.js";
 import Keys from "./components/Keys.vue";
 import KeyValue from "./components/KeyValue.vue";
 
@@ -25,6 +25,12 @@ function selectDB (db, connIdentity) {
 function selectKey(key) {
   keyKey.value = key
 }
+
+function addKeyValue() {
+  CreateKeyValue({conn_identity: "cc69d2e0-80e4-40ed-96a3-8706403b4c7c", db: 0, key: "name3", type: "string"}).then(res => {
+    console.log(res)
+  })
+}
 </script>
 
 <template>
@@ -32,6 +38,7 @@ function selectKey(key) {
     <el-col :span="5" style="height: 100vh; padding: 12px">
       <div style="margin-bottom: 12px">
         <ConnectionManage title="新建连接" btn-type="primary" @emit-connection-list="flushConnectionList"/>
+        <el-button @click="addKeyValue()">测试</el-button>
       </div>
       <ConnectionList @emit-select-db="selectDB" :flush="flushFlag"/>
     </el-col>

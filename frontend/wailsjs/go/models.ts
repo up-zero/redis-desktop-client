@@ -22,6 +22,24 @@ export namespace define {
 	        this.password = source["password"];
 	    }
 	}
+	export class CreateKeyValueRequest {
+	    conn_identity: string;
+	    db: number;
+	    key: string;
+	    type: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new CreateKeyValueRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.conn_identity = source["conn_identity"];
+	        this.db = source["db"];
+	        this.key = source["key"];
+	        this.type = source["type"];
+	    }
+	}
 	export class KeyListRequest {
 	    conn_identity: string;
 	    db: number;
