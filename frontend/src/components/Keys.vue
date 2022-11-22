@@ -1,5 +1,25 @@
 <template>
   <main>
+    <el-dialog
+        v-model="keyDialogVisible"
+        title="创建键"
+        width="60%"
+    >
+      <el-form :model="keyForm" label-width="120px">
+        <el-form-item label="键的名称">
+          <el-input placeholder="请输入键的名称" v-model="keyForm.key" />
+        </el-form-item>
+        <el-form-item label="键的类型">
+          <el-select v-model="keyForm.type" placeholder="请选择键的类型">
+            <el-option value="string" label="string"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="createKey">创建</el-button>
+          <el-button @click="keyDialogVisible = false">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
     <el-form :inline="true" :model="form" class="demo-form-inline">
       <el-form-item label="">
         <el-input v-model="form.keyword" placeholder="请输入键的信息" />
@@ -8,6 +28,7 @@
         <el-button type="primary" @click="getKeyList">查询</el-button>
       </el-form-item>
     </el-form>
+    <el-button @click="keyDialogVisible = true" style="width: 100%; margin-bottom: 12px;">创建键</el-button>
     <div v-for="item in keys" @click="selectKeyKey(item)">
       <div v-if="item === selectKey" class="item key-select-item">
         <div style="padding: 5px 12px">{{item}}</div>
@@ -30,7 +51,7 @@
 </template>
 
 <script setup>
-import {ConnectionDelete, DeleteKeyValue, KeyList} from "../../wailsjs/go/main/App.js";
+import {ConnectionDelete, CreateKeyValue, DeleteKeyValue, KeyList} from "../../wailsjs/go/main/App.js";
 import {reactive, ref, watch} from 'vue'
 import {ElNotification} from "element-plus";
 
@@ -42,6 +63,8 @@ let props = defineProps(['keyDB', 'keyConnIdentity'])
 let emits = defineEmits(['emit-select-key'])
 let keys = ref()
 let selectKey = ref()
+let keyDialogVisible = ref(false)
+let keyForm = ref({})
 
 watch(props, ()=> {
   getKeyList()
@@ -83,6 +106,24 @@ function deleteKey(key) {
       title:res.msg,
       type: "success",
     })
+    getKeyList()
+  })
+}
+
+function createKey() {
+  CreateKeyValue({conn_identity: props.keyConnIdentity, db: props.keyDB, key: keyForm.value.key, type: keyForm.value.type}).then(res => {
+    if (res.code !== 200) {
+      ElNotification({
+        title:res.msg,
+        type: "error",
+      })
+      return
+    }
+    ElNotification({
+      title:res.msg,
+      type: "success",
+    })
+    keyDialogVisible.value = false
     getKeyList()
   })
 }
