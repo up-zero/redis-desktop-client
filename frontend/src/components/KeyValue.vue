@@ -20,13 +20,16 @@
       <el-form-item label="值">
         <el-input type="textarea" v-model="form.value" placeholder="" />
       </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="updateKey">保存</el-button>
+      </el-form-item>
     </el-form>
   </main>
 </template>
 
 <script setup>
 import {ref, watch} from 'vue'
-import {GetKeyValue} from "../../wailsjs/go/main/App.js";
+import {GetKeyValue, UpdateKeyValue} from "../../wailsjs/go/main/App.js";
 import {ElNotification} from "element-plus";
 let props = defineProps(['keyDB', 'keyConnIdentity', 'keyKey'])
 let form = ref({})
@@ -46,6 +49,22 @@ function getTheValue() {
     }
     form.value = res.data
     form.value.key = props.keyKey
+  })
+}
+
+function updateKey() {
+  UpdateKeyValue({conn_identity: props.keyConnIdentity, key: props.keyKey, db: props.keyDB, value: form.value.value, ttl: form.value.ttl}).then(res => {
+    if (res.code !== 200) {
+      ElNotification({
+        title:res.msg,
+        type: "error",
+      })
+      return
+    }
+    ElNotification({
+      title:res.msg,
+      type: "success",
+    })
   })
 }
 </script>

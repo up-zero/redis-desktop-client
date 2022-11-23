@@ -72,6 +72,26 @@ export namespace define {
 	        this.key = source["key"];
 	    }
 	}
+	export class UpdateKeyValueRequest {
+	    conn_identity: string;
+	    db: number;
+	    key: string;
+	    ttl: number;
+	    value: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new UpdateKeyValueRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.conn_identity = source["conn_identity"];
+	        this.db = source["db"];
+	        this.key = source["key"];
+	        this.ttl = source["ttl"];
+	        this.value = source["value"];
+	    }
+	}
 
 }
 

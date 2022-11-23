@@ -22,3 +22,5 @@ export function GetKeyValue(arg1:define.KeyValueRequest):Promise<main.H>;
 export function Greet(arg1:string):Promise<string>;
 
 export function KeyList(arg1:define.KeyListRequest):Promise<main.H>;
+
+export function UpdateKeyValue(arg1:define.UpdateKeyValueRequest):Promise<main.H>;

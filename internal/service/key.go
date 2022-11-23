@@ -91,3 +91,19 @@ func CreateKeyValue(req *define.CreateKeyValueRequest) error {
 	err = rdb.Set(context.Background(), req.Key, defaultValue, -1).Err()
 	return err
 }
+
+func UpdateKeyValue(req *define.UpdateKeyValueRequest) error {
+	conn, err := helper.GetConnection(req.ConnIdentity)
+	if err != nil {
+		return err
+	}
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     conn.Addr + ":" + conn.Port,
+		Username: conn.Username,
+		Password: conn.Password,
+		DB:       req.Db,
+	})
+	// type ==> string
+	err = rdb.Set(context.Background(), req.Key, req.Value, req.TTL).Err()
+	return err
+}

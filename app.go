@@ -186,3 +186,24 @@ func (a *App) CreateKeyValue(req *define.CreateKeyValueRequest) H {
 		"msg":  "新增成功",
 	}
 }
+
+// UpdateKeyValue 键值对更新
+func (a *App) UpdateKeyValue(req *define.UpdateKeyValueRequest) H {
+	if req.Key == "" || req.ConnIdentity == "" || req.Value == "" {
+		return M{
+			"code": -1,
+			"msg":  "必填参不能为空",
+		}
+	}
+	err := service.UpdateKeyValue(req)
+	if err != nil {
+		return M{
+			"code": -1,
+			"msg":  "ERROR : " + err.Error(),
+		}
+	}
+	return M{
+		"code": 200,
+		"msg":  "更新成功",
+	}
+}
