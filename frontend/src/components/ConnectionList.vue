@@ -77,13 +77,13 @@ function connectionDelete(identity) {
 // 获取基本信息
 function getInfo(identity) {
   // 获取数据库列表
+  infoDbList.value = []
   DbList(identity).then(res => {
     if (res.code !== 200) {
       ElNotification({
         title:res.msg,
         type: "error",
       })
-      return
     }
     infoDbList.value = res.data
   })

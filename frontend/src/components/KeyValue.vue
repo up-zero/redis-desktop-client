@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main v-if="keyKey !== undefined">
     <el-form :model="form">
       <el-form-item label="键">
         <el-input v-model="form.key" disabled placeholder="" />

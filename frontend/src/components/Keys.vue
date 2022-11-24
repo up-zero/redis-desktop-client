@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main v-if="keyDB !== undefined">
     <el-dialog
         v-model="keyDialogVisible"
         title="创建键"
