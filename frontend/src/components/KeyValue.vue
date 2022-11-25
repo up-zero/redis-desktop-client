@@ -2,7 +2,7 @@
   <main v-if="keyKey !== undefined">
     <el-form :model="form">
       <el-form-item label="键">
-        <el-input v-model="form.key" disabled placeholder="" />
+        <el-input type="textarea" autosize v-model="form.key" disabled placeholder="" />
       </el-form-item>
       <el-row>
         <el-col :span="11">
@@ -17,12 +17,20 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="值">
-        <el-input type="textarea" v-model="form.value" placeholder="" />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="updateKey">保存</el-button>
-      </el-form-item>
+      <div v-if="form.type === 'string'">
+        <el-form-item label="值">
+          <el-input type="textarea" :autosize="{ minRows: 6 }" v-model="form.value" placeholder="" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="updateKey">保存</el-button>
+        </el-form-item>
+      </div>
+      <div v-else-if="form.type === 'hash'">
+        <el-table :data="form.value" border style="width: 100%">
+          <el-table-column prop="key" label="Key" />
+          <el-table-column prop="value" label="Value" />
+        </el-table>
+      </div>
     </el-form>
   </main>
 </template>

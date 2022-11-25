@@ -18,9 +18,9 @@ func KeyList(req *define.KeyListRequest) ([]string, error) {
 		Password: conn.Password,
 		DB:       req.Db,
 	})
-	var count int64 = 100
+	var count = define.DefaultKeyLen
 	if req.Keyword != "" {
-		count = 2000
+		count = define.MaxKeyLen
 	}
 	res, _, err := rdb.Scan(context.Background(), 0, "*"+req.Keyword+"*", count).Result()
 	if err != nil {
@@ -44,20 +44,36 @@ func GetKeyValue(req *define.KeyValueRequest) (*define.KeyValueReply, error) {
 	if err != nil {
 		return nil, err
 	}
-	// _type => string
-	v, err := rdb.Get(context.Background(), req.Key).Result()
-	if err != nil {
-		return nil, err
+	var reply = &define.KeyValueReply{
+		Type: _type,
 	}
+	if _type == "string" {
+		v, err := rdb.Get(context.Background(), req.Key).Result()
+		if err != nil {
+			return nil, err
+		}
+		reply.Value = v
+	} else if _type == "hash" {
+		keys, _, err := rdb.HScan(context.Background(), req.Key, 0, "", define.MaxHashLen).Result()
+		if err != nil {
+			return nil, err
+		}
+		data := make([]*define.KeyValue, 0, len(keys)/2)
+		for i := 0; i < len(keys); i += 2 {
+			data = append(data, &define.KeyValue{
+				Key:   keys[i],
+				Value: keys[i+1],
+			})
+		}
+		reply.Value = data
+	}
+
 	ttl, err := rdb.TTL(context.Background(), req.Key).Result()
 	if err != nil {
 		return nil, err
 	}
-	return &define.KeyValueReply{
-		Value: v,
-		TTL:   ttl,
-		Type:  _type,
-	}, nil
+	reply.TTL = ttl
+	return reply, nil
 }
 
 func DeleteKeyValue(req *define.KeyValueRequest) error {
@@ -86,9 +102,11 @@ func CreateKeyValue(req *define.CreateKeyValueRequest) error {
 		Password: conn.Password,
 		DB:       req.Db,
 	})
-	// type => string
-	defaultValue := "value"
-	err = rdb.Set(context.Background(), req.Key, defaultValue, -1).Err()
+	if req.Type == "string" {
+		err = rdb.Set(context.Background(), req.Key, "value", -1).Err()
+	} else if req.Type == "hash" {
+		err = rdb.HSet(context.Background(), req.Key, map[string]string{"key": "value"}).Err()
+	}
 	return err
 }
 

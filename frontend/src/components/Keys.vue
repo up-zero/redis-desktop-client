@@ -12,6 +12,7 @@
         <el-form-item label="键的类型">
           <el-select v-model="keyForm.type" placeholder="请选择键的类型">
             <el-option value="string" label="string"></el-option>
+            <el-option value="hash" label="hash"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>

@@ -12,6 +12,7 @@ import (
 var rdb = redis.NewClient(&redis.Options{
 	Addr: "localhost:6379",
 })
+var ctx = context.Background()
 
 func TestInfo(t *testing.T) {
 	res, err := rdb.Info(context.Background(), "keyspace").Result()
@@ -49,4 +50,36 @@ func TestConfigGet(t *testing.T) {
 		t.Fatal(err)
 	}
 	fmt.Println(res)
+}
+
+func TestType(t *testing.T) {
+	res, err := rdb.Type(context.Background(), "hash").Result()
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(res)
+}
+
+func TestHash(t *testing.T) {
+	intCmd := rdb.HSet(ctx, "hash", map[string]string{"k1": "v1", "k2": "v2", "k3": "v3"})
+	fmt.Println(intCmd)
+	getOne := rdb.HGet(ctx, "hash", "k1")
+	fmt.Println(getOne.Val())
+	all := rdb.HGetAll(ctx, "hash")
+	for key, value := range all.Val() {
+		fmt.Println("key --> ", key, " value --> ", value)
+	}
+}
+
+func TestHashGet(t *testing.T) {
+	resLen, err := rdb.HLen(ctx, "hash").Result()
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(resLen)
+	res, _, err := rdb.HScan(ctx, "hash", 0, "", 200).Result()
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(len(res), res)
 }

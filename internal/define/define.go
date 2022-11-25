@@ -13,6 +13,15 @@ type Connection struct {
 	Password string `json:"password"`
 }
 
+var (
+	// DefaultKeyLen 键列表的默认查询长度
+	DefaultKeyLen int64 = 100
+	// MaxKeyLen 键列表的最大查询长度
+	MaxKeyLen int64 = 2000
+	// MaxHashLen hash列表的最大查询长度
+	MaxHashLen int64 = 200
+)
+
 type Config struct {
 	Connections []*Connection `json:"connections"`
 }
@@ -28,6 +37,11 @@ type KeyListRequest struct {
 	Keyword      string `json:"keyword"`
 }
 
+type KeyValue struct {
+	Key   string      `json:"key"`
+	Value interface{} `json:"value"`
+}
+
 type KeyValueRequest struct {
 	ConnIdentity string `json:"conn_identity"`
 	Db           int    `json:"db"`
@@ -35,7 +49,7 @@ type KeyValueRequest struct {
 }
 
 type KeyValueReply struct {
-	Value string        `json:"value"`
+	Value interface{}   `json:"value"`
 	TTL   time.Duration `json:"ttl"`
 	Type  string        `json:"type"`
 }
