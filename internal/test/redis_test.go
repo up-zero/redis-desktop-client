@@ -83,3 +83,11 @@ func TestHashGet(t *testing.T) {
 	}
 	fmt.Println(len(res), res)
 }
+
+func TestHashDelete(t *testing.T) {
+	err := rdb.HDel(ctx, "hash2", "key").Err()
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println("Success Delete")
+}

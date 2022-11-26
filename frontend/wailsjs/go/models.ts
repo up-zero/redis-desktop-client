@@ -40,6 +40,24 @@ export namespace define {
 	        this.type = source["type"];
 	    }
 	}
+	export class HashFieldDeleteRequest {
+	    conn_identity: string;
+	    db: number;
+	    key: string;
+	    field: string[];
+	
+	    static createFrom(source: any = {}) {
+	        return new HashFieldDeleteRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.conn_identity = source["conn_identity"];
+	        this.db = source["db"];
+	        this.key = source["key"];
+	        this.field = source["field"];
+	    }
+	}
 	export class KeyListRequest {
 	    conn_identity: string;
 	    db: number;

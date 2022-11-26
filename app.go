@@ -207,3 +207,24 @@ func (a *App) UpdateKeyValue(req *define.UpdateKeyValueRequest) H {
 		"msg":  "更新成功",
 	}
 }
+
+// HashFieldDelete hash字段删除
+func (a *App) HashFieldDelete(req *define.HashFieldDeleteRequest) H {
+	if req.Key == "" || req.ConnIdentity == "" || len(req.Field) == 0 {
+		return M{
+			"code": -1,
+			"msg":  "必填参不能为空",
+		}
+	}
+	err := service.HashFieldDelete(req)
+	if err != nil {
+		return M{
+			"code": -1,
+			"msg":  "ERROR : " + err.Error(),
+		}
+	}
+	return M{
+		"code": 200,
+		"msg":  "删除成功",
+	}
+}

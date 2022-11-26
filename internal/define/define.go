@@ -64,3 +64,8 @@ type UpdateKeyValueRequest struct {
 	TTL   time.Duration `json:"ttl"`
 	Value string        `json:"value"`
 }
+
+type HashFieldDeleteRequest struct {
+	KeyValueRequest
+	Field []string `json:"field"`
+}
