@@ -6,10 +6,8 @@
 
 ## 技术栈
 
-+ 后端
-  + golang、go-redis
-+ 前端
-  + vue3、element-plus
++ 后端 ：golang、go-redis
++ 前端 ：vue3、element-plus
 
 ## 安装
 
@@ -49,3 +47,13 @@ wails build -platform=darwin
 # Linux
 wails build -platform=linux
 ```
+
+## 软件截图
+
++ String 类型
+
+![img.png](images/string.png)
+
++ Hash 类型
+
+![img_1.png](images/hash.png)
