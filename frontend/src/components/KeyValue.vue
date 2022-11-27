@@ -26,11 +26,33 @@
         </el-form-item>
       </div>
       <div v-else-if="form.type === 'hash'">
+        <el-form-item>
+          <el-button type="primary" @click="showHashChangeDialog('add', null)">新增一行</el-button>
+        </el-form-item>
+        <el-dialog
+            v-model="hashDialogVisible"
+            :title="hashDialogTitle"
+            width="50%"
+        >
+          <el-form :model="hashForm" label-width="100px">
+            <el-form-item label="字段名称">
+              <el-input placeholder="请输入字段名称" v-model="hashForm.field" />
+            </el-form-item>
+            <el-form-item label="字段的值">
+              <el-input placeholder="请输入字段的值" v-model="hashForm.value" />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="hashFiledChange">创建</el-button>
+              <el-button @click="hashDialogVisible = false">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
         <el-table :data="form.value" border style="width: 100%">
           <el-table-column prop="key" label="Key" />
           <el-table-column prop="value" label="Value" />
           <el-table-column label="操作">
             <template #default="scope">
+              <el-button link type="primary" @click="showHashChangeDialog('edit', scope.row)">编辑</el-button>
               <el-popconfirm title="确认删除?" @confirm="deleteHashField([scope.row.key])">
                 <template #reference>
                   <el-button link type="danger">删除</el-button>
@@ -46,10 +68,13 @@
 
 <script setup>
 import {ref, watch} from 'vue'
-import {GetKeyValue, HashFieldDelete, UpdateKeyValue} from "../../wailsjs/go/main/App.js";
+import {GetKeyValue, HashAddOrUpdateField, HashFieldDelete, UpdateKeyValue} from "../../wailsjs/go/main/App.js";
 import {ElNotification} from "element-plus";
 let props = defineProps(['keyDB', 'keyConnIdentity', 'keyKey'])
 let form = ref({})
+let hashDialogVisible = ref(false)
+let hashDialogTitle = ref("")
+let hashForm = ref({})
 
 watch(()=>props.keyKey, () => {
   getTheValue()
@@ -87,6 +112,38 @@ function updateKey() {
 
 function deleteHashField(fields) {
   HashFieldDelete({conn_identity: props.keyConnIdentity, db: props.keyDB, key: props.keyKey, field:fields}).then(res => {
+    if (res.code !== 200) {
+      ElNotification({
+        title:res.msg,
+        type: "error",
+      })
+      return
+    }
+    ElNotification({
+      title:res.msg,
+      type: "success",
+    })
+    getTheValue()
+  })
+}
+
+function showHashChangeDialog (type, hash) {
+  hashDialogVisible.value = true
+  if (type === "add") {
+    hashDialogTitle.value = "HASH 字段新增"
+    hashForm.value = {}
+  } else {
+    hashDialogTitle.value = "HASH 字段更新"
+    hashForm.value = {
+      field: hash.key,
+      value: hash.value
+    }
+  }
+}
+
+function hashFiledChange () {
+  HashAddOrUpdateField({conn_identity: props.keyConnIdentity, db: props.keyDB, key: props.keyKey, field: hashForm.value.field, value: hashForm.value.value}).then(res => {
+    hashDialogVisible.value = false
     if (res.code !== 200) {
       ElNotification({
         title:res.msg,

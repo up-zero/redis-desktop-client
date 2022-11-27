@@ -38,6 +38,10 @@ export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }
 
+export function HashAddOrUpdateField(arg1) {
+  return window['go']['main']['App']['HashAddOrUpdateField'](arg1);
+}
+
 export function HashFieldDelete(arg1) {
   return window['go']['main']['App']['HashFieldDelete'](arg1);
 }

@@ -228,3 +228,24 @@ func (a *App) HashFieldDelete(req *define.HashFieldDeleteRequest) H {
 		"msg":  "删除成功",
 	}
 }
+
+// HashAddOrUpdateField hash字段新增、更新
+func (a *App) HashAddOrUpdateField(req *define.HashAddOrUpdateFieldRequest) H {
+	if req.Key == "" || req.ConnIdentity == "" || req.Field == "" {
+		return M{
+			"code": -1,
+			"msg":  "必填参不能为空",
+		}
+	}
+	err := service.HashAddOrUpdateField(req)
+	if err != nil {
+		return M{
+			"code": -1,
+			"msg":  "ERROR : " + err.Error(),
+		}
+	}
+	return M{
+		"code": 200,
+		"msg":  "修改成功",
+	}
+}
