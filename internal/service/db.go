@@ -10,6 +10,7 @@ import (
 	"strings"
 )
 
+// DbList 数据库列表
 func DbList(identity string) ([]*define.DbItem, error) {
 	if identity == "" {
 		return nil, errors.New("连接唯一标识不能为空")

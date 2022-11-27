@@ -48,6 +48,7 @@ if (props.data !== undefined) {
 
 function createConnection() {
   ConnectionCreate(form).then(res => {
+    dialogVisible.value = false
     if (res.code !== 200) {
       ElNotification({
         title:res.msg,
@@ -66,6 +67,7 @@ function createConnection() {
 
 function editConnection() {
   ConnectionEdit(form).then(res => {
+    dialogVisible.value = false
     if (res.code !== 200) {
       ElNotification({
         title:res.msg,

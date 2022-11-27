@@ -7,6 +7,7 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
+// HashFieldDelete hash 字段删除
 func HashFieldDelete(req *define.HashFieldDeleteRequest) error {
 	conn, err := helper.GetConnection(req.ConnIdentity)
 	if err != nil {
@@ -22,6 +23,7 @@ func HashFieldDelete(req *define.HashFieldDeleteRequest) error {
 	return err
 }
 
+// HashAddOrUpdateField hash 字段新增、修改
 func HashAddOrUpdateField(req *define.HashAddOrUpdateFieldRequest) error {
 	conn, err := helper.GetConnection(req.ConnIdentity)
 	if err != nil {

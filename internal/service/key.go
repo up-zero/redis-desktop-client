@@ -7,6 +7,7 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
+// KeyList 键列表
 func KeyList(req *define.KeyListRequest) ([]string, error) {
 	conn, err := helper.GetConnection(req.ConnIdentity)
 	if err != nil {
@@ -29,6 +30,7 @@ func KeyList(req *define.KeyListRequest) ([]string, error) {
 	return res, nil
 }
 
+// GetKeyValue 获取键值对
 func GetKeyValue(req *define.KeyValueRequest) (*define.KeyValueReply, error) {
 	conn, err := helper.GetConnection(req.ConnIdentity)
 	if err != nil {
@@ -76,6 +78,7 @@ func GetKeyValue(req *define.KeyValueRequest) (*define.KeyValueReply, error) {
 	return reply, nil
 }
 
+// DeleteKeyValue 删除键值对
 func DeleteKeyValue(req *define.KeyValueRequest) error {
 	conn, err := helper.GetConnection(req.ConnIdentity)
 	if err != nil {
@@ -110,6 +113,7 @@ func CreateKeyValue(req *define.CreateKeyValueRequest) error {
 	return err
 }
 
+// UpdateKeyValue 更新键值对数据
 func UpdateKeyValue(req *define.UpdateKeyValueRequest) error {
 	conn, err := helper.GetConnection(req.ConnIdentity)
 	if err != nil {

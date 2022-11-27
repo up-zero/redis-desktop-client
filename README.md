@@ -37,3 +37,15 @@
   + [x] 更新键值对
 + [ ] RedisCli
 
+## 构建
+
+使用 `wails build` 默认根据当前操作系统进行编译，通过 `-platform` 指定编译环境，能够实现跨平台编译
+
+```shell
+# Windows
+wails build -platform=windows
+# Mac
+wails build -platform=darwin
+# Linux
+wails build -platform=linux
+```

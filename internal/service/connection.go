@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"gitee.com/up-zero/redis-desktop-client/internal/define"
+	"gitee.com/up-zero/redis-desktop-client/internal/helper"
 	uuid "github.com/satori/go.uuid"
 	"io/ioutil"
 	"os"
@@ -11,10 +12,10 @@ import (
 
 // ConnectionList 连接列表
 func ConnectionList() ([]*define.Connection, error) {
-	nowPath, _ := os.Getwd()
+	nowPath := helper.GetConfPath()
 	data, err := ioutil.ReadFile(nowPath + string(os.PathSeparator) + define.ConfigName)
 	if errors.Is(err, os.ErrNotExist) {
-		return nil, err
+		return nil, errors.New("暂无连接数据")
 	}
 	conf := new(define.Config)
 	err = json.Unmarshal(data, conf)
@@ -38,7 +39,7 @@ func ConnectionCreate(conn *define.Connection) error {
 	}
 	conn.Identity = uuid.NewV4().String()
 	conf := new(define.Config)
-	nowPath, _ := os.Getwd()
+	nowPath := helper.GetConfPath()
 	data, err := ioutil.ReadFile(nowPath + string(os.PathSeparator) + define.ConfigName)
 	if errors.Is(err, os.ErrNotExist) {
 		// 配置文件的内容初始化
@@ -72,7 +73,7 @@ func ConnectionEdit(conn *define.Connection) error {
 		conn.Port = "6379"
 	}
 	conf := new(define.Config)
-	nowPath, _ := os.Getwd()
+	nowPath := helper.GetConfPath()
 	data, err := ioutil.ReadFile(nowPath + string(os.PathSeparator) + define.ConfigName)
 	if err != nil {
 		return err
@@ -94,7 +95,7 @@ func ConnectionDelete(identity string) error {
 		return errors.New("连接唯一标识不能为空")
 	}
 	conf := new(define.Config)
-	nowPath, _ := os.Getwd()
+	nowPath := helper.GetConfPath()
 	data, err := ioutil.ReadFile(nowPath + string(os.PathSeparator) + define.ConfigName)
 	if err != nil {
 		return err
