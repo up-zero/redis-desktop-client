@@ -3,6 +3,7 @@ package test
 import (
 	"context"
 	"fmt"
+	"gitee.com/up-zero/redis-desktop-client/internal/define"
 	"github.com/go-redis/redis/v8"
 	"strconv"
 	"strings"
@@ -90,4 +91,12 @@ func TestHashDelete(t *testing.T) {
 		t.Fatal(err)
 	}
 	fmt.Println("Success Delete")
+}
+
+func TestLRange(t *testing.T) {
+	res, err := rdb.LRange(context.Background(), "list", 0, define.MaxListLen-1).Result()
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(res)
 }

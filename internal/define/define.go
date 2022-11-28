@@ -20,6 +20,8 @@ var (
 	MaxKeyLen int64 = 2000
 	// MaxHashLen hash列表的最大查询长度
 	MaxHashLen int64 = 200
+	// MaxListLen list列表的最大查询长度
+	MaxListLen int64 = 200
 )
 
 type Config struct {

@@ -68,6 +68,18 @@ func GetKeyValue(req *define.KeyValueRequest) (*define.KeyValueReply, error) {
 			})
 		}
 		reply.Value = data
+	} else if _type == "list" {
+		list, err := rdb.LRange(context.Background(), req.Key, 0, define.MaxListLen-1).Result()
+		if err != nil {
+			return nil, err
+		}
+		data := make([]*define.KeyValue, 0, len(list))
+		for i := 0; i < len(list); i++ {
+			data = append(data, &define.KeyValue{
+				Value: list[i],
+			})
+		}
+		reply.Value = data
 	}
 
 	ttl, err := rdb.TTL(context.Background(), req.Key).Result()
@@ -94,6 +106,7 @@ func DeleteKeyValue(req *define.KeyValueRequest) error {
 	return err
 }
 
+// CreateKeyValue 创建键值对
 func CreateKeyValue(req *define.CreateKeyValueRequest) error {
 	conn, err := helper.GetConnection(req.ConnIdentity)
 	if err != nil {
@@ -109,6 +122,8 @@ func CreateKeyValue(req *define.CreateKeyValueRequest) error {
 		err = rdb.Set(context.Background(), req.Key, "value", -1).Err()
 	} else if req.Type == "hash" {
 		err = rdb.HSet(context.Background(), req.Key, map[string]string{"key": "value"}).Err()
+	} else if req.Type == "list" {
+		err = rdb.RPush(context.Background(), req.Key, "value").Err()
 	}
 	return err
 }
