@@ -71,7 +71,7 @@
           <el-table-column prop="value" label="Value" />
           <el-table-column label="操作">
             <template #default="scope">
-              <el-popconfirm title="确认删除?">
+              <el-popconfirm title="确认删除?" @confirm="deleteListItem(scope.row.value)">
                 <template #reference>
                   <el-button link type="danger">删除</el-button>
                 </template>
@@ -86,7 +86,13 @@
 
 <script setup>
 import {ref, watch} from 'vue'
-import {GetKeyValue, HashAddOrUpdateField, HashFieldDelete, UpdateKeyValue} from "../../wailsjs/go/main/App.js";
+import {
+  GetKeyValue,
+  HashAddOrUpdateField,
+  HashFieldDelete,
+  ListValueDelete,
+  UpdateKeyValue
+} from "../../wailsjs/go/main/App.js";
 import {ElNotification} from "element-plus";
 let props = defineProps(['keyDB', 'keyConnIdentity', 'keyKey'])
 let form = ref({})
@@ -162,6 +168,23 @@ function showHashChangeDialog (type, hash) {
 function hashFiledChange () {
   HashAddOrUpdateField({conn_identity: props.keyConnIdentity, db: props.keyDB, key: props.keyKey, field: hashForm.value.field, value: hashForm.value.value}).then(res => {
     hashDialogVisible.value = false
+    if (res.code !== 200) {
+      ElNotification({
+        title:res.msg,
+        type: "error",
+      })
+      return
+    }
+    ElNotification({
+      title:res.msg,
+      type: "success",
+    })
+    getTheValue()
+  })
+}
+
+function deleteListItem(value) {
+  ListValueDelete({conn_identity: props.keyConnIdentity, db: props.keyDB, key: props.keyKey, value: value}).then(res => {
     if (res.code !== 200) {
       ElNotification({
         title:res.msg,

@@ -50,6 +50,10 @@ export function KeyList(arg1) {
   return window['go']['main']['App']['KeyList'](arg1);
 }
 
+export function ListValueDelete(arg1) {
+  return window['go']['main']['App']['ListValueDelete'](arg1);
+}
+
 export function UpdateKeyValue(arg1) {
   return window['go']['main']['App']['UpdateKeyValue'](arg1);
 }

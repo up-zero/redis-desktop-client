@@ -249,3 +249,24 @@ func (a *App) HashAddOrUpdateField(req *define.HashAddOrUpdateFieldRequest) H {
 		"msg":  "修改成功",
 	}
 }
+
+// ListValueDelete 列表值删除
+func (a *App) ListValueDelete(req *define.ListValueDeleteRequest) H {
+	if req.Key == "" || req.ConnIdentity == "" || req.Value == "" {
+		return M{
+			"code": -1,
+			"msg":  "必填参不能为空",
+		}
+	}
+	err := service.ListValueDelete(req)
+	if err != nil {
+		return M{
+			"code": -1,
+			"msg":  "ERROR : " + err.Error(),
+		}
+	}
+	return M{
+		"code": 200,
+		"msg":  "删除成功",
+	}
+}

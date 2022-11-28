@@ -27,4 +27,6 @@ export function HashFieldDelete(arg1:define.HashFieldDeleteRequest):Promise<main
 
 export function KeyList(arg1:define.KeyListRequest):Promise<main.H>;
 
+export function ListValueDelete(arg1:define.ListValueDeleteRequest):Promise<main.H>;
+
 export function UpdateKeyValue(arg1:define.UpdateKeyValueRequest):Promise<main.H>;

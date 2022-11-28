@@ -77,3 +77,8 @@ type HashAddOrUpdateFieldRequest struct {
 	Field string `json:"field"`
 	Value string `json:"value"`
 }
+
+type ListValueDeleteRequest struct {
+	KeyValueRequest
+	Value string `json:"value"`
+}
