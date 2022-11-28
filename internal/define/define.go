@@ -78,7 +78,7 @@ type HashAddOrUpdateFieldRequest struct {
 	Value string `json:"value"`
 }
 
-type ListValueDeleteRequest struct {
+type ListValueRequest struct {
 	KeyValueRequest
 	Value string `json:"value"`
 }

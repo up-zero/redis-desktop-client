@@ -52,8 +52,12 @@ wails build -platform=linux
 
 + String 类型
 
-![img.png](images/string.png)
+![string.png](images/string.png)
 
 + Hash 类型
 
-![img_1.png](images/hash.png)
+![hash.png](images/hash.png)
+
++ List 类型
+
+![list.png](images/list.png)

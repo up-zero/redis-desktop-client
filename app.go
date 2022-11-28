@@ -251,7 +251,7 @@ func (a *App) HashAddOrUpdateField(req *define.HashAddOrUpdateFieldRequest) H {
 }
 
 // ListValueDelete 列表值删除
-func (a *App) ListValueDelete(req *define.ListValueDeleteRequest) H {
+func (a *App) ListValueDelete(req *define.ListValueRequest) H {
 	if req.Key == "" || req.ConnIdentity == "" || req.Value == "" {
 		return M{
 			"code": -1,
@@ -268,5 +268,25 @@ func (a *App) ListValueDelete(req *define.ListValueDeleteRequest) H {
 	return M{
 		"code": 200,
 		"msg":  "删除成功",
+	}
+}
+// ListValueCreate 列表值新增
+func (a *App) ListValueCreate(req *define.ListValueRequest) H {
+	if req.Key == "" || req.ConnIdentity == "" || req.Value == "" {
+		return M{
+			"code": -1,
+			"msg":  "必填参不能为空",
+		}
+	}
+	err := service.ListValueCreate(req)
+	if err != nil {
+		return M{
+			"code": -1,
+			"msg":  "ERROR : " + err.Error(),
+		}
+	}
+	return M{
+		"code": 200,
+		"msg":  "创建成功",
 	}
 }

@@ -64,8 +64,23 @@
       </div>
       <div v-else-if="form.type === 'list'">
         <el-form-item>
-          <el-button type="primary">新增一行</el-button>
+          <el-button type="primary" @click="listDialogVisible = true">新增一行</el-button>
         </el-form-item>
+        <el-dialog
+            v-model="listDialogVisible"
+            title="LIST 值新增"
+            width="60%"
+        >
+          <el-form :model="listForm" label-width="100px">
+            <el-form-item label="字段的值">
+              <el-input type="textarea" :rows="6" placeholder="请输入字段的值" v-model="listForm.value" />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="createListValue">创建</el-button>
+              <el-button @click="listDialogVisible = false">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
         <el-table :data="form.value" border style="width: 100%">
           <el-table-column type="index" />
           <el-table-column prop="value" label="Value" />
@@ -89,7 +104,7 @@ import {ref, watch} from 'vue'
 import {
   GetKeyValue,
   HashAddOrUpdateField,
-  HashFieldDelete,
+  HashFieldDelete, ListValueCreate,
   ListValueDelete,
   UpdateKeyValue
 } from "../../wailsjs/go/main/App.js";
@@ -99,6 +114,8 @@ let form = ref({})
 let hashDialogVisible = ref(false)
 let hashDialogTitle = ref("")
 let hashForm = ref({})
+let listDialogVisible = ref(false)
+let listForm = ref({})
 
 watch(()=>props.keyKey, () => {
   getTheValue()
@@ -185,6 +202,24 @@ function hashFiledChange () {
 
 function deleteListItem(value) {
   ListValueDelete({conn_identity: props.keyConnIdentity, db: props.keyDB, key: props.keyKey, value: value}).then(res => {
+    if (res.code !== 200) {
+      ElNotification({
+        title:res.msg,
+        type: "error",
+      })
+      return
+    }
+    ElNotification({
+      title:res.msg,
+      type: "success",
+    })
+    getTheValue()
+  })
+}
+
+function createListValue() {
+  ListValueCreate({conn_identity: props.keyConnIdentity, db: props.keyDB, key: props.keyKey, value: listForm.value.value}).then(res => {
+    listDialogVisible.value = false
     if (res.code !== 200) {
       ElNotification({
         title:res.msg,

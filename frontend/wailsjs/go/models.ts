@@ -110,14 +110,14 @@ export namespace define {
 	        this.key = source["key"];
 	    }
 	}
-	export class ListValueDeleteRequest {
+	export class ListValueRequest {
 	    conn_identity: string;
 	    db: number;
 	    key: string;
 	    value: string;
 	
 	    static createFrom(source: any = {}) {
-	        return new ListValueDeleteRequest(source);
+	        return new ListValueRequest(source);
 	    }
 	
 	    constructor(source: any = {}) {
