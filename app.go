@@ -270,6 +270,7 @@ func (a *App) ListValueDelete(req *define.ListValueRequest) H {
 		"msg":  "删除成功",
 	}
 }
+
 // ListValueCreate 列表值新增
 func (a *App) ListValueCreate(req *define.ListValueRequest) H {
 	if req.Key == "" || req.ConnIdentity == "" || req.Value == "" {
@@ -279,6 +280,48 @@ func (a *App) ListValueCreate(req *define.ListValueRequest) H {
 		}
 	}
 	err := service.ListValueCreate(req)
+	if err != nil {
+		return M{
+			"code": -1,
+			"msg":  "ERROR : " + err.Error(),
+		}
+	}
+	return M{
+		"code": 200,
+		"msg":  "创建成功",
+	}
+}
+
+// SetValueDelete 集合值删除
+func (a *App) SetValueDelete(req *define.SetValueRequest) H {
+	if req.Key == "" || req.ConnIdentity == "" || req.Value == "" {
+		return M{
+			"code": -1,
+			"msg":  "必填参不能为空",
+		}
+	}
+	err := service.SetValueDelete(req)
+	if err != nil {
+		return M{
+			"code": -1,
+			"msg":  "ERROR : " + err.Error(),
+		}
+	}
+	return M{
+		"code": 200,
+		"msg":  "删除成功",
+	}
+}
+
+// SetValueCreate 集合新增
+func (a *App) SetValueCreate(req *define.SetValueRequest) H {
+	if req.Key == "" || req.ConnIdentity == "" || req.Value == "" {
+		return M{
+			"code": -1,
+			"msg":  "必填参不能为空",
+		}
+	}
+	err := service.SetValueCreate(req)
 	if err != nil {
 		return M{
 			"code": -1,

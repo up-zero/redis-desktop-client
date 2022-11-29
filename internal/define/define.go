@@ -22,6 +22,8 @@ var (
 	MaxHashLen int64 = 200
 	// MaxListLen list列表的最大查询长度
 	MaxListLen int64 = 200
+	// MaxSetLen set的最大查询长度
+	MaxSetLen int64 = 200
 )
 
 type Config struct {
@@ -79,6 +81,11 @@ type HashAddOrUpdateFieldRequest struct {
 }
 
 type ListValueRequest struct {
+	KeyValueRequest
+	Value string `json:"value"`
+}
+
+type SetValueRequest struct {
 	KeyValueRequest
 	Value string `json:"value"`
 }

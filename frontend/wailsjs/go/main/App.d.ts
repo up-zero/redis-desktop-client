@@ -31,4 +31,8 @@ export function ListValueCreate(arg1:define.ListValueRequest):Promise<main.H>;
 
 export function ListValueDelete(arg1:define.ListValueRequest):Promise<main.H>;
 
+export function SetValueCreate(arg1:define.SetValueRequest):Promise<main.H>;
+
+export function SetValueDelete(arg1:define.SetValueRequest):Promise<main.H>;
+
 export function UpdateKeyValue(arg1:define.UpdateKeyValueRequest):Promise<main.H>;

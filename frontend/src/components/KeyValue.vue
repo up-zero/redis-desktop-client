@@ -95,6 +95,39 @@
           </el-table-column>
         </el-table>
       </div>
+      <div v-else-if="form.type === 'set'">
+        <el-form-item>
+          <el-button type="primary" @click="setDialogVisible = true">新增一行</el-button>
+        </el-form-item>
+        <el-dialog
+            v-model="setDialogVisible"
+            title="SET 值新增"
+            width="60%"
+        >
+          <el-form :model="setForm" label-width="100px">
+            <el-form-item label="字段的值">
+              <el-input type="textarea" :rows="6" placeholder="请输入字段的值" v-model="setForm.value" />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="createSetValue">创建</el-button>
+              <el-button @click="setDialogVisible = false">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
+        <el-table :data="form.value" border style="width: 100%">
+          <el-table-column type="index" />
+          <el-table-column prop="value" label="Value" />
+          <el-table-column label="操作">
+            <template #default="scope">
+              <el-popconfirm title="确认删除?"  @confirm="deleteSetItem(scope.row.value)">
+                <template #reference>
+                  <el-button link type="danger">删除</el-button>
+                </template>
+              </el-popconfirm>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </el-form>
   </main>
 </template>
@@ -105,7 +138,7 @@ import {
   GetKeyValue,
   HashAddOrUpdateField,
   HashFieldDelete, ListValueCreate,
-  ListValueDelete,
+  ListValueDelete, SetValueCreate, SetValueDelete,
   UpdateKeyValue
 } from "../../wailsjs/go/main/App.js";
 import {ElNotification} from "element-plus";
@@ -116,6 +149,8 @@ let hashDialogTitle = ref("")
 let hashForm = ref({})
 let listDialogVisible = ref(false)
 let listForm = ref({})
+let setDialogVisible = ref(false)
+let setForm = ref({})
 
 watch(()=>props.keyKey, () => {
   getTheValue()
@@ -220,6 +255,41 @@ function deleteListItem(value) {
 function createListValue() {
   ListValueCreate({conn_identity: props.keyConnIdentity, db: props.keyDB, key: props.keyKey, value: listForm.value.value}).then(res => {
     listDialogVisible.value = false
+    if (res.code !== 200) {
+      ElNotification({
+        title:res.msg,
+        type: "error",
+      })
+      return
+    }
+    ElNotification({
+      title:res.msg,
+      type: "success",
+    })
+    getTheValue()
+  })
+}
+
+function deleteSetItem(value) {
+  SetValueDelete({conn_identity: props.keyConnIdentity, db: props.keyDB, key: props.keyKey, value: value}).then(res => {
+    if (res.code !== 200) {
+      ElNotification({
+        title:res.msg,
+        type: "error",
+      })
+      return
+    }
+    ElNotification({
+      title:res.msg,
+      type: "success",
+    })
+    getTheValue()
+  })
+}
+
+function createSetValue() {
+  SetValueCreate({conn_identity: props.keyConnIdentity, db: props.keyDB, key: props.keyKey, value: setForm.value.value}).then(res => {
+    setDialogVisible.value = false
     if (res.code !== 200) {
       ElNotification({
         title:res.msg,

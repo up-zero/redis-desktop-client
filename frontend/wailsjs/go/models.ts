@@ -128,6 +128,24 @@ export namespace define {
 	        this.value = source["value"];
 	    }
 	}
+	export class SetValueRequest {
+	    conn_identity: string;
+	    db: number;
+	    key: string;
+	    value: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new SetValueRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.conn_identity = source["conn_identity"];
+	        this.db = source["db"];
+	        this.key = source["key"];
+	        this.value = source["value"];
+	    }
+	}
 	export class UpdateKeyValueRequest {
 	    conn_identity: string;
 	    db: number;

@@ -58,6 +58,14 @@ export function ListValueDelete(arg1) {
   return window['go']['main']['App']['ListValueDelete'](arg1);
 }
 
+export function SetValueCreate(arg1) {
+  return window['go']['main']['App']['SetValueCreate'](arg1);
+}
+
+export function SetValueDelete(arg1) {
+  return window['go']['main']['App']['SetValueDelete'](arg1);
+}
+
 export function UpdateKeyValue(arg1) {
   return window['go']['main']['App']['UpdateKeyValue'](arg1);
 }

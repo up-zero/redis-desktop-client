@@ -80,6 +80,18 @@ func GetKeyValue(req *define.KeyValueRequest) (*define.KeyValueReply, error) {
 			})
 		}
 		reply.Value = data
+	} else if _type == "set" {
+		sets, _, err := rdb.SScan(context.Background(), req.Key, 0, "", define.MaxSetLen).Result()
+		if err != nil {
+			return nil, err
+		}
+		data := make([]*define.KeyValue, 0, len(sets))
+		for i := 0; i < len(sets); i++ {
+			data = append(data, &define.KeyValue{
+				Value: sets[i],
+			})
+		}
+		reply.Value = data
 	}
 
 	ttl, err := rdb.TTL(context.Background(), req.Key).Result()
@@ -124,6 +136,8 @@ func CreateKeyValue(req *define.CreateKeyValueRequest) error {
 		err = rdb.HSet(context.Background(), req.Key, map[string]string{"key": "value"}).Err()
 	} else if req.Type == "list" {
 		err = rdb.RPush(context.Background(), req.Key, "value").Err()
+	} else if req.Type == "set" {
+		err = rdb.SAdd(context.Background(), req.Key, "value").Err()
 	}
 	return err
 }

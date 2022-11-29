@@ -61,3 +61,7 @@ wails build -platform=linux
 + List 类型
 
 ![list.png](images/list.png)
+
++ Set 类型
+
+![set.png](images/set.png)
