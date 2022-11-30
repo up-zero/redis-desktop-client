@@ -9,16 +9,7 @@ import (
 
 // KeyList 键列表
 func KeyList(req *define.KeyListRequest) ([]string, error) {
-	conn, err := helper.GetConnection(req.ConnIdentity)
-	if err != nil {
-		return nil, err
-	}
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     conn.Addr + ":" + conn.Port,
-		Username: conn.Username,
-		Password: conn.Password,
-		DB:       req.Db,
-	})
+	rdb, err := helper.GetRedisClient(req.ConnIdentity, req.Db)
 	var count = define.DefaultKeyLen
 	if req.Keyword != "" {
 		count = define.MaxKeyLen
@@ -32,16 +23,7 @@ func KeyList(req *define.KeyListRequest) ([]string, error) {
 
 // GetKeyValue 获取键值对
 func GetKeyValue(req *define.KeyValueRequest) (*define.KeyValueReply, error) {
-	conn, err := helper.GetConnection(req.ConnIdentity)
-	if err != nil {
-		return nil, err
-	}
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     conn.Addr + ":" + conn.Port,
-		Username: conn.Username,
-		Password: conn.Password,
-		DB:       req.Db,
-	})
+	rdb, err := helper.GetRedisClient(req.ConnIdentity, req.Db)
 	_type, err := rdb.Type(context.Background(), req.Key).Result()
 	if err != nil {
 		return nil, err
@@ -110,32 +92,14 @@ func GetKeyValue(req *define.KeyValueRequest) (*define.KeyValueReply, error) {
 
 // DeleteKeyValue 删除键值对
 func DeleteKeyValue(req *define.KeyValueRequest) error {
-	conn, err := helper.GetConnection(req.ConnIdentity)
-	if err != nil {
-		return err
-	}
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     conn.Addr + ":" + conn.Port,
-		Username: conn.Username,
-		Password: conn.Password,
-		DB:       req.Db,
-	})
+	rdb, err := helper.GetRedisClient(req.ConnIdentity, req.Db)
 	_, err = rdb.Del(context.Background(), req.Key).Result()
 	return err
 }
 
 // CreateKeyValue 创建键值对
 func CreateKeyValue(req *define.CreateKeyValueRequest) error {
-	conn, err := helper.GetConnection(req.ConnIdentity)
-	if err != nil {
-		return err
-	}
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     conn.Addr + ":" + conn.Port,
-		Username: conn.Username,
-		Password: conn.Password,
-		DB:       req.Db,
-	})
+	rdb, err := helper.GetRedisClient(req.ConnIdentity, req.Db)
 	if req.Type == "string" {
 		err = rdb.Set(context.Background(), req.Key, "value", -1).Err()
 	} else if req.Type == "hash" {
@@ -155,16 +119,7 @@ func CreateKeyValue(req *define.CreateKeyValueRequest) error {
 
 // UpdateKeyValue 更新键值对数据
 func UpdateKeyValue(req *define.UpdateKeyValueRequest) error {
-	conn, err := helper.GetConnection(req.ConnIdentity)
-	if err != nil {
-		return err
-	}
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     conn.Addr + ":" + conn.Port,
-		Username: conn.Username,
-		Password: conn.Password,
-		DB:       req.Db,
-	})
+	rdb, err := helper.GetRedisClient(req.ConnIdentity, req.Db)
 	// type ==> string
 	err = rdb.Set(context.Background(), req.Key, req.Value, req.TTL).Err()
 	return err
