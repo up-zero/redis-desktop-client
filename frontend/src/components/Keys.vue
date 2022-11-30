@@ -15,6 +15,7 @@
             <el-option value="hash" label="hash"></el-option>
             <el-option value="list" label="list"></el-option>
             <el-option value="set" label="set"></el-option>
+            <el-option value="zset" label="zset"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>

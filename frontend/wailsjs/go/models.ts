@@ -166,6 +166,26 @@ export namespace define {
 	        this.value = source["value"];
 	    }
 	}
+	export class ZSetValueRequest {
+	    conn_identity: string;
+	    db: number;
+	    key: string;
+	    score: number;
+	    member: any;
+	
+	    static createFrom(source: any = {}) {
+	        return new ZSetValueRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.conn_identity = source["conn_identity"];
+	        this.db = source["db"];
+	        this.key = source["key"];
+	        this.score = source["score"];
+	        this.member = source["member"];
+	    }
+	}
 
 }
 

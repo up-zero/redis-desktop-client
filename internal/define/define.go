@@ -24,6 +24,8 @@ var (
 	MaxListLen int64 = 200
 	// MaxSetLen set的最大查询长度
 	MaxSetLen int64 = 200
+	// MaxZSetLen zset的最大查询长度
+	MaxZSetLen int64 = 200
 )
 
 type Config struct {
@@ -88,4 +90,10 @@ type ListValueRequest struct {
 type SetValueRequest struct {
 	KeyValueRequest
 	Value string `json:"value"`
+}
+
+type ZSetValueRequest struct {
+	KeyValueRequest
+	Score  float64     `json:"score"`
+	Member interface{} `json:"member"`
 }

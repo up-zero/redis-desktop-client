@@ -65,3 +65,7 @@ wails build -platform=linux
 + Set 类型
 
 ![set.png](images/set.png)
+
++ ZSet 类型
+
+![zset.png](images/zset.png)

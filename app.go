@@ -333,3 +333,45 @@ func (a *App) SetValueCreate(req *define.SetValueRequest) H {
 		"msg":  "创建成功",
 	}
 }
+
+// ZSetValueDelete 有序集合值删除
+func (a *App) ZSetValueDelete(req *define.ZSetValueRequest) H {
+	if req.Key == "" || req.ConnIdentity == "" || req.Member == nil {
+		return M{
+			"code": -1,
+			"msg":  "必填参不能为空",
+		}
+	}
+	err := service.ZSetValueDelete(req)
+	if err != nil {
+		return M{
+			"code": -1,
+			"msg":  "ERROR : " + err.Error(),
+		}
+	}
+	return M{
+		"code": 200,
+		"msg":  "删除成功",
+	}
+}
+
+// ZSetValueCreate 有序集合新增
+func (a *App) ZSetValueCreate(req *define.ZSetValueRequest) H {
+	if req.Key == "" || req.ConnIdentity == "" || req.Member == nil {
+		return M{
+			"code": -1,
+			"msg":  "必填参不能为空",
+		}
+	}
+	err := service.ZSetValueCreate(req)
+	if err != nil {
+		return M{
+			"code": -1,
+			"msg":  "ERROR : " + err.Error(),
+		}
+	}
+	return M{
+		"code": 200,
+		"msg":  "创建成功",
+	}
+}

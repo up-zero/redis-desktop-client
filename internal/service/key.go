@@ -92,6 +92,12 @@ func GetKeyValue(req *define.KeyValueRequest) (*define.KeyValueReply, error) {
 			})
 		}
 		reply.Value = data
+	} else if _type == "zset" {
+		z, err := rdb.ZRevRangeWithScores(context.Background(), req.Key, 0, define.MaxZSetLen-1).Result()
+		if err != nil {
+			return nil, err
+		}
+		reply.Value = z
 	}
 
 	ttl, err := rdb.TTL(context.Background(), req.Key).Result()
@@ -138,6 +144,11 @@ func CreateKeyValue(req *define.CreateKeyValueRequest) error {
 		err = rdb.RPush(context.Background(), req.Key, "value").Err()
 	} else if req.Type == "set" {
 		err = rdb.SAdd(context.Background(), req.Key, "value").Err()
+	} else if req.Type == "zset" {
+		err = rdb.ZAdd(context.Background(), req.Key, &redis.Z{
+			Score:  0,
+			Member: "value",
+		}).Err()
 	}
 	return err
 }

@@ -36,3 +36,7 @@ export function SetValueCreate(arg1:define.SetValueRequest):Promise<main.H>;
 export function SetValueDelete(arg1:define.SetValueRequest):Promise<main.H>;
 
 export function UpdateKeyValue(arg1:define.UpdateKeyValueRequest):Promise<main.H>;
+
+export function ZSetValueCreate(arg1:define.ZSetValueRequest):Promise<main.H>;
+
+export function ZSetValueDelete(arg1:define.ZSetValueRequest):Promise<main.H>;

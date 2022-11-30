@@ -100,3 +100,13 @@ func TestLRange(t *testing.T) {
 	}
 	fmt.Println(res)
 }
+
+func TestZRevRange(t *testing.T) {
+	rz, err := rdb.ZRevRangeWithScores(context.Background(), "zset2", 0, 199).Result()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, v := range rz {
+		fmt.Println(v)
+	}
+}

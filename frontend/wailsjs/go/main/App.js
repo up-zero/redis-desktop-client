@@ -69,3 +69,11 @@ export function SetValueDelete(arg1) {
 export function UpdateKeyValue(arg1) {
   return window['go']['main']['App']['UpdateKeyValue'](arg1);
 }
+
+export function ZSetValueCreate(arg1) {
+  return window['go']['main']['App']['ZSetValueCreate'](arg1);
+}
+
+export function ZSetValueDelete(arg1) {
+  return window['go']['main']['App']['ZSetValueDelete'](arg1);
+}

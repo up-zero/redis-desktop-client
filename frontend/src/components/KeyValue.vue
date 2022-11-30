@@ -48,6 +48,7 @@
           </el-form>
         </el-dialog>
         <el-table :data="form.value" border style="width: 100%">
+          <el-table-column type="index" />
           <el-table-column prop="key" label="Key" />
           <el-table-column prop="value" label="Value" />
           <el-table-column label="操作">
@@ -128,6 +129,43 @@
           </el-table-column>
         </el-table>
       </div>
+      <div v-else-if="form.type === 'zset'">
+        <el-form-item>
+          <el-button type="primary" @click="zsetDialogVisible = true">新增一行</el-button>
+        </el-form-item>
+        <el-dialog
+            v-model="zsetDialogVisible"
+            title="ZSET 值新增"
+            width="60%"
+        >
+          <el-form :model="zsetForm" label-width="100px">
+            <el-form-item label="字段的分值">
+              <el-input type="number" placeholder="请输入字段的分值" v-model="zsetForm.score" />
+            </el-form-item>
+            <el-form-item label="字段的值">
+              <el-input type="textarea" :rows="6" placeholder="请输入字段的值" v-model="zsetForm.member" />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="createZSetValue">创建</el-button>
+              <el-button @click="zsetDialogVisible = false">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
+        <el-table :data="form.value" border style="width: 100%">
+          <el-table-column type="index" />
+          <el-table-column prop="Score" label="Score" />
+          <el-table-column prop="Member" label="Member" />
+          <el-table-column label="操作">
+            <template #default="scope">
+              <el-popconfirm title="确认删除?"  @confirm="deleteZSetMember(scope.row.Member)">
+                <template #reference>
+                  <el-button link type="danger">删除</el-button>
+                </template>
+              </el-popconfirm>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </el-form>
   </main>
 </template>
@@ -139,7 +177,7 @@ import {
   HashAddOrUpdateField,
   HashFieldDelete, ListValueCreate,
   ListValueDelete, SetValueCreate, SetValueDelete,
-  UpdateKeyValue
+  UpdateKeyValue, ZSetValueCreate, ZSetValueDelete
 } from "../../wailsjs/go/main/App.js";
 import {ElNotification} from "element-plus";
 let props = defineProps(['keyDB', 'keyConnIdentity', 'keyKey'])
@@ -151,6 +189,8 @@ let listDialogVisible = ref(false)
 let listForm = ref({})
 let setDialogVisible = ref(false)
 let setForm = ref({})
+let zsetDialogVisible = ref(false)
+let zsetForm = ref({})
 
 watch(()=>props.keyKey, () => {
   getTheValue()
@@ -290,6 +330,41 @@ function deleteSetItem(value) {
 function createSetValue() {
   SetValueCreate({conn_identity: props.keyConnIdentity, db: props.keyDB, key: props.keyKey, value: setForm.value.value}).then(res => {
     setDialogVisible.value = false
+    if (res.code !== 200) {
+      ElNotification({
+        title:res.msg,
+        type: "error",
+      })
+      return
+    }
+    ElNotification({
+      title:res.msg,
+      type: "success",
+    })
+    getTheValue()
+  })
+}
+
+function deleteZSetMember(member) {
+  ZSetValueDelete({conn_identity: props.keyConnIdentity, db: props.keyDB, key: props.keyKey, member: member}).then(res => {
+    if (res.code !== 200) {
+      ElNotification({
+        title:res.msg,
+        type: "error",
+      })
+      return
+    }
+    ElNotification({
+      title:res.msg,
+      type: "success",
+    })
+    getTheValue()
+  })
+}
+
+function createZSetValue() {
+  ZSetValueCreate({conn_identity: props.keyConnIdentity, db: props.keyDB, key: props.keyKey, score: +(zsetForm.value.score), member: zsetForm.value.member}).then(res => {
+    zsetDialogVisible.value = false
     if (res.code !== 200) {
       ElNotification({
         title:res.msg,
