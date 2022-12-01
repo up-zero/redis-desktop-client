@@ -5,7 +5,6 @@ import (
 	"errors"
 	"gitee.com/up-zero/redis-desktop-client/internal/define"
 	"gitee.com/up-zero/redis-desktop-client/internal/helper"
-	"github.com/go-redis/redis/v8"
 	"strconv"
 	"strings"
 )
@@ -15,16 +14,11 @@ func DbList(identity string) ([]*define.DbItem, error) {
 	if identity == "" {
 		return nil, errors.New("连接唯一标识不能为空")
 	}
-	conn, err := helper.GetConnection(identity)
+	rdb, err := helper.GetRedisClient(identity, 0)
 	if err != nil {
 		return nil, err
 	}
-	// 获取数据库的连接对象
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     conn.Addr + ":" + conn.Port,
-		Username: conn.Username,
-		Password: conn.Password,
-	})
+
 	// info 获取数据库键的个数
 	keySpace, err := rdb.Info(context.Background(), "keyspace").Result()
 	if err != nil {
