@@ -1,13 +1,17 @@
 package helper
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"gitee.com/up-zero/redis-desktop-client/internal/define"
 	"github.com/go-redis/redis/v8"
+	"golang.org/x/crypto/ssh"
 	"io/ioutil"
+	"net"
 	"os"
 	"os/user"
+	"time"
 )
 
 func GetConnection(identity string) (*define.Connection, error) {
@@ -35,6 +39,26 @@ func GetConfPath() string {
 	return current.HomeDir
 }
 
+func getSSHClient(username, password, addr string) (*ssh.Client, error) {
+	config := &ssh.ClientConfig{
+		User: username,
+		Auth: []ssh.AuthMethod{
+			ssh.Password(password),
+		},
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+		Timeout:         15 * time.Second,
+	}
+	return ssh.Dial("tcp", addr, config)
+}
+
+func getRedisConn(username, password, addr, redisAddr string) (net.Conn, error) {
+	client, err := getSSHClient(username, password, addr)
+	if err != nil {
+		return nil, err
+	}
+	return client.Dial("tcp", redisAddr)
+}
+
 // GetRedisClient 获取 Redis 客户端对象
 //
 // connectionIdentity 连接唯一标识
@@ -44,11 +68,19 @@ func GetRedisClient(connectionIdentity string, db int) (*redis.Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     conn.Addr + ":" + conn.Port,
-		Username: conn.Username,
-		Password: conn.Password,
-		DB:       db,
-	})
+	redisOption := &redis.Options{
+		Addr:         net.JoinHostPort(conn.Addr, conn.Port),
+		Username:     conn.Username,
+		Password:     conn.Password,
+		DB:           db,
+		ReadTimeout:  -1,
+		WriteTimeout: -1,
+	}
+	if conn.Type == "ssh" {
+		redisOption.Dialer = func(ctx context.Context, network, addr string) (net.Conn, error) {
+			return getRedisConn(conn.SSHUsername, conn.SSHPassword, conn.SSHAddr+":"+conn.SSHPort, addr)
+		}
+	}
+	rdb := redis.NewClient(redisOption)
 	return rdb, err
 }

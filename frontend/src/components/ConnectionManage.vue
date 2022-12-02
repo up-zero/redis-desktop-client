@@ -22,9 +22,28 @@
         <el-form-item label="密码">
           <el-input placeholder="请输入密码" type="password" v-model="form.password" />
         </el-form-item>
+        <el-form-item label="连接方式">
+          <el-select v-model="form.type" placeholder="请选连接方式" clearable>
+            <el-option value="ssh" label="ssh"></el-option>
+          </el-select>
+        </el-form-item>
+        <div v-show="form.type === 'ssh'">
+          <el-form-item label="SSH 地址">
+            <el-input placeholder="请输入 SSH 地址" v-model="form.ssh_addr" />
+          </el-form-item>
+          <el-form-item label="SSH 端口号">
+            <el-input placeholder="请输入 SSH 端口号" v-model="form.ssh_port" />
+          </el-form-item>
+          <el-form-item label="SSH 用户名">
+            <el-input placeholder="请输入 SSH 用户名" v-model="form.ssh_username" />
+          </el-form-item>
+          <el-form-item label="SSH 密码">
+            <el-input placeholder="请输入 SSH 密码" type="password" v-model="form.ssh_password" />
+          </el-form-item>
+        </div>
         <el-form-item>
           <el-button v-if="data === undefined" type="primary" @click="createConnection">创建</el-button>
-          <el-button v-else type="primary" @click="editConnection">编辑</el-button>
+          <el-button v-else type="primary" @click="editConnection">保存</el-button>
           <el-button @click="dialogVisible = false">取消</el-button>
         </el-form-item>
       </el-form>

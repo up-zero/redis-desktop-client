@@ -11,6 +11,15 @@ type Connection struct {
 	Port     string `json:"port"`
 	Username string `json:"username"`
 	Password string `json:"password"`
+	Type     string `json:"type"` // 连接类型
+	SSHConfig
+}
+
+type SSHConfig struct {
+	SSHAddr     string `json:"ssh_addr"`
+	SSHPort     string `json:"ssh_port"`
+	SSHUsername string `json:"ssh_username"`
+	SSHPassword string `json:"ssh_password"`
 }
 
 var (

@@ -7,6 +7,11 @@ export namespace define {
 	    port: string;
 	    username: string;
 	    password: string;
+	    type: string;
+	    ssh_addr: string;
+	    ssh_port: string;
+	    ssh_username: string;
+	    ssh_password: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new Connection(source);
@@ -20,6 +25,11 @@ export namespace define {
 	        this.port = source["port"];
 	        this.username = source["username"];
 	        this.password = source["password"];
+	        this.type = source["type"];
+	        this.ssh_addr = source["ssh_addr"];
+	        this.ssh_port = source["ssh_port"];
+	        this.ssh_username = source["ssh_username"];
+	        this.ssh_password = source["ssh_password"];
 	    }
 	}
 	export class CreateKeyValueRequest {

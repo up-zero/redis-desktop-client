@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"gitee.com/up-zero/redis-desktop-client/internal/define"
+	"gitee.com/up-zero/redis-desktop-client/internal/helper"
 	"github.com/go-redis/redis/v8"
 	"strconv"
 	"strings"
@@ -109,4 +110,16 @@ func TestZRevRange(t *testing.T) {
 	for _, v := range rz {
 		fmt.Println(v)
 	}
+}
+
+func TestGetRedisClient(t *testing.T) {
+	rdb, err := helper.GetRedisClient("cc69d2e0-80e4-40ed-96a3-8706403b4c7c", 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	res, err := rdb.Info(context.Background()).Result()
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(res)
 }
