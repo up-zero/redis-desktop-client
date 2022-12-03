@@ -35,7 +35,7 @@
     <el-button @click="keyDialogVisible = true" style="width: 100%; margin-bottom: 12px;">创建键</el-button>
     <div v-for="item in keys" @click="selectKeyKey(item)">
       <div v-if="item === selectKey" class="item key-select-item">
-        <div style="padding: 5px 12px">{{item}}</div>
+        <div class="key-item-name">{{item}}</div>
         <el-popconfirm title="确认删除?" @confirm="deleteKey(item)">
           <template #reference>
             <el-button text type="danger" @click.stop>删除</el-button>
@@ -43,7 +43,7 @@
         </el-popconfirm>
       </div>
       <div v-else class="item key-item">
-        <div style="padding: 5px 12px">{{item}}</div>
+        <div class="key-item-name">{{item}}</div>
         <el-popconfirm title="确认删除?" @confirm="deleteKey(item)">
           <template #reference>
             <el-button text type="danger" @click.stop>删除</el-button>
@@ -138,6 +138,11 @@ function createKey() {
   color: #409eff;
   background-color: #ecf5ff;
   margin-bottom: 5px;
+}
+.key-item-name {
+  padding: 5px 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .key-select-item {
   color: #67c23a;
