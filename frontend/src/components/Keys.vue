@@ -33,22 +33,24 @@
       </el-form-item>
     </el-form>
     <el-button @click="keyDialogVisible = true" style="width: 100%; margin-bottom: 12px;">创建键</el-button>
-    <div v-for="item in keys" @click="selectKeyKey(item)">
-      <div v-if="item === selectKey" class="item key-select-item">
-        <div class="key-item-name">{{item}}</div>
-        <el-popconfirm title="确认删除?" @confirm="deleteKey(item)">
-          <template #reference>
-            <el-button text type="danger" @click.stop>删除</el-button>
-          </template>
-        </el-popconfirm>
-      </div>
-      <div v-else class="item key-item">
-        <div class="key-item-name">{{item}}</div>
-        <el-popconfirm title="确认删除?" @confirm="deleteKey(item)">
-          <template #reference>
-            <el-button text type="danger" @click.stop>删除</el-button>
-          </template>
-        </el-popconfirm>
+    <div id="keys">
+      <div v-for="item in keys" @click="selectKeyKey(item)">
+        <div v-if="item === selectKey" class="item key-select-item">
+          <div class="key-item-name">{{item}}</div>
+          <el-popconfirm title="确认删除?" @confirm="deleteKey(item)">
+            <template #reference>
+              <el-button text type="danger" @click.stop>删除</el-button>
+            </template>
+          </el-popconfirm>
+        </div>
+        <div v-else class="item key-item">
+          <div class="key-item-name">{{item}}</div>
+          <el-popconfirm title="确认删除?" @confirm="deleteKey(item)">
+            <template #reference>
+              <el-button text type="danger" @click.stop>删除</el-button>
+            </template>
+          </el-popconfirm>
+        </div>
       </div>
     </div>
   </main>
@@ -134,6 +136,10 @@ function createKey() {
 </script>
 
 <style scoped>
+#keys {
+  overflow: auto;
+  max-height: 75vh;
+}
 .key-item {
   color: #409eff;
   background-color: #ecf5ff;

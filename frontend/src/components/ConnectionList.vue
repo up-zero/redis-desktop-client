@@ -18,9 +18,11 @@
               </div>
             </div>
           </template>
-          <div v-for="db in infoDbList" @click="selectDB(db.key, item.identity)">
-            <div v-if="db.key !== selectDbKey" class="my-item">{{db.key}} ( {{db.number}} )</div>
-            <div v-else class="my-select-item">{{db.key}} ( {{db.number}} )</div>
+          <div id="dbs">
+            <div v-for="db in infoDbList" @click.stop="selectDB(db.key, item.identity)">
+              <div v-if="db.key !== selectDbKey" class="my-item">{{db.key}} ( {{db.number}} )</div>
+              <div v-else class="my-select-item">{{db.key}} ( {{db.number}} )</div>
+            </div>
           </div>
         </el-collapse-item>
       </el-collapse>
@@ -99,5 +101,8 @@ function selectDB(db, connIdentity) {
 </script>
 
 <style scoped>
-
+#dbs {
+  overflow: auto;
+  max-height: 75vh;
+}
 </style>
