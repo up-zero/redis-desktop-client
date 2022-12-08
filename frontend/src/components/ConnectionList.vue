@@ -9,6 +9,7 @@
                 {{ item.name }}
               </div>
               <div style="display: flex">
+                <DbInfo @click.stop :data="item"></DbInfo>
                 <ConnectionManage @click.stop title="编辑" btn-type="text" :data="item" @emit-connection-list="connectionList"/>
                 <el-popconfirm title="确认删除?" @confirm="connectionDelete(item.identity)">
                   <template #reference>
@@ -35,6 +36,7 @@ import {ref, watch} from "vue";
 import {ConnectionDelete, ConnectionList, DbList} from "../../wailsjs/go/main/App.js";
 import {ElNotification} from "element-plus"
 import ConnectionManage from "./ConnectionManage.vue";
+import DbInfo from "./DbInfo.vue";
 let list = ref()
 let props = defineProps(['flush'])
 let emits = defineEmits(['emit-select-db'])

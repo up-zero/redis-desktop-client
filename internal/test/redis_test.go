@@ -17,6 +17,11 @@ var rdb = redis.NewClient(&redis.Options{
 var ctx = context.Background()
 
 func TestInfo(t *testing.T) {
+	info, err := rdb.Info(context.Background()).Result()
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(info)
 	res, err := rdb.Info(context.Background(), "keyspace").Result()
 	if err != nil {
 		t.Fatal(err)

@@ -13,6 +13,8 @@ export function ConnectionList():Promise<main.H>;
 
 export function CreateKeyValue(arg1:define.CreateKeyValueRequest):Promise<main.H>;
 
+export function DbInfo(arg1:string):Promise<main.H>;
+
 export function DbList(arg1:string):Promise<main.H>;
 
 export function DeleteKeyValue(arg1:define.KeyValueRequest):Promise<main.H>;

@@ -22,6 +22,10 @@ export function CreateKeyValue(arg1) {
   return window['go']['main']['App']['CreateKeyValue'](arg1);
 }
 
+export function DbInfo(arg1) {
+  return window['go']['main']['App']['DbInfo'](arg1);
+}
+
 export function DbList(arg1) {
   return window['go']['main']['App']['DbList'](arg1);
 }

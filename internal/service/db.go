@@ -73,3 +73,35 @@ func DbList(identity string) ([]*define.DbItem, error) {
 	}
 	return data, nil
 }
+
+// DbInfo 数据库详情
+func DbInfo(identity string) ([]*define.KeyValue, error) {
+	if identity == "" {
+		return nil, errors.New("连接唯一标识不能为空")
+	}
+	rdb, err := helper.GetRedisClient(identity, 0)
+	if err != nil {
+		return nil, err
+	}
+
+	// info 获取数据库键的个数
+	keySpace, err := rdb.Info(context.Background()).Result()
+	if err != nil {
+		return nil, err
+	}
+	// info 数据格式
+	// key:value
+	data := make([]*define.KeyValue, 0)
+	infos := strings.Split(keySpace, "\n")
+	for _, info := range infos {
+		v := strings.Split(info, ":")
+		if len(v) == 2 {
+			data = append(data, &define.KeyValue{
+				Key:   v[0],
+				Value: v[1],
+			})
+		}
+	}
+
+	return data, nil
+}

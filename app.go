@@ -88,6 +88,21 @@ func (a *App) ConnectionDelete(identity string) H {
 	}
 }
 
+// DbInfo 数据库详情
+func (a *App) DbInfo(identity string) H {
+	info, err := service.DbInfo(identity)
+	if err != nil {
+		return M{
+			"code": -1,
+			"msg":  "ERROR : " + err.Error(),
+		}
+	}
+	return M{
+		"code": 200,
+		"data": info,
+	}
+}
+
 // DbList 数据库列表
 func (a *App) DbList(identity string) H {
 	dbs, err := service.DbList(identity)
